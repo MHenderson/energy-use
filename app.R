@@ -35,10 +35,10 @@ energy <- energy %>%
     mutate(
       electricity_unit_rate = 15.886, # 2018 - 2019
       gas_unit_rate         = 3.869,  # 2018 - 2019
-      electricity_unit_rate = 15.61,  # 2019 - 2020
-      gas_unit_rate         = 3.33,   # 2019 - 2020
-      electricity_unit_rate = 13.548, # 2020 - 2021
-      gas_unit_rate         = 2.607   # 2020 - 2021
+      electricity_unit_rate = 15.61,  # 2019 - 2020 19.33 standing charge
+      gas_unit_rate         = 3.33,   # 2019 - 2020 19.23 standing charge
+      electricity_unit_rate = 13.548, # 2020 - 2021 18.073
+      gas_unit_rate         = 2.607   # 2020 - 2021 10.62
     ) %>%
     mutate(
       gas_cost = gas * gas_unit_rate,
