@@ -33,20 +33,22 @@ energy <- energy %>%
 energy <- energy %>%
     arrange(date) %>%
     mutate(
-        electricity_unit_rate = 15.886,
-        gas_unit_rate = 3.869,
-        electricity_unit_rate = 15.61,
-        gas_unit_rate = 3.33
+      electricity_unit_rate = 15.886, # 2018 - 2019
+      gas_unit_rate         = 3.869,  # 2018 - 2019
+      electricity_unit_rate = 15.61,  # 2019 - 2020
+      gas_unit_rate         = 3.33,   # 2019 - 2020
+      electricity_unit_rate = 13.548, # 2020 - 2021
+      gas_unit_rate         = 2.607   # 2020 - 2021
     ) %>%
     mutate(
-        gas_cost = gas * gas_unit_rate,
-        electricity_cost = electricity * electricity_unit_rate
+      gas_cost = gas * gas_unit_rate,
+      electricity_cost = electricity * electricity_unit_rate
     ) %>%
     mutate(
-        total_gas = cumsum(gas),
-        total_electricity = cumsum(electricity),
-        total_gas_cost = cumsum(gas_cost),
-        total_electricity_cost = cumsum(electricity_cost),
+      total_gas = cumsum(gas),
+      total_electricity = cumsum(electricity),
+      total_gas_cost = cumsum(gas_cost),
+      total_electricity_cost = cumsum(electricity_cost),
     )
 
 tidy_energy <- energy %>%
