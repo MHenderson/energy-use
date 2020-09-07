@@ -49,13 +49,7 @@ ui <- fluidPage(
 
     titlePanel("My Energy Use"),
 
-    sidebarLayout(
-        sidebarPanel(),
-
-        mainPanel(
-           plotlyOutput("distPlot")
-        )
-    )
+    plotlyOutput("distPlot")
 )
 
 server <- function(input, output) {
