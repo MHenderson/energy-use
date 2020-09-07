@@ -7,11 +7,13 @@ library(shiny)
 library(simputation)
 library(tidyverse)
 
+drive_auth(cache = ".secrets", email = TRUE)
+
 energy_2019 <- drive_get("energy") %>%
-    sheets_read("2019")
+    range_read("2019")
 
 energy_2020 <- drive_get("energy") %>%
-    sheets_read("2020")
+    range_read("2020")
 
 energy <- bind_rows(energy_2019, energy_2020) %>%
     filter(!is.na(electricity)) %>%
