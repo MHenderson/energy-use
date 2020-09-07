@@ -1,18 +1,15 @@
-library(googledrive)
 library(googlesheets4)
-library(here)
 library(plotly)
-library(readxl)
 library(shiny)
 library(simputation)
 library(tidyverse)
 
-drive_auth(cache = ".secrets", email = TRUE)
+gs4_deauth()
 
-energy_2019 <- drive_get("energy") %>%
+energy_2019 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
     range_read("2019")
 
-energy_2020 <- drive_get("energy") %>%
+energy_2020 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
     range_read("2020")
 
 energy <- bind_rows(energy_2019, energy_2020) %>%
