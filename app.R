@@ -1,5 +1,6 @@
 library(googlesheets4)
 library(shiny)
+library(shinyMobile)
 library(simputation)
 library(tidyverse)
 
@@ -37,11 +38,30 @@ energy <- energy %>%
 tidy_energy <- energy %>%
     gather("fuel", "kwH", c("gas", "electricity"))
 
-ui <- fluidPage(
-
-    titlePanel("My Energy Use"),
-
-    plotOutput("distPlot")
+ui = f7Page(
+  title = "My Energy Use",
+  dark_mode = FALSE,
+  init = f7Init(skin = "ios", theme = "light"),
+  f7SingleLayout(
+    navbar = f7Navbar(
+      title = "My Energy Use",
+      hairline = TRUE,
+      shadow = TRUE
+    ),
+    toolbar = f7Toolbar(
+      position = "bottom",
+      f7Link(label = "Link 1", src = "https://www.google.com"),
+      f7Link(label = "Link 2", src = "https://www.google.com", external = TRUE)
+    ),
+    f7Shadow(
+      intensity = 16,
+      hover = TRUE,
+      f7Card(
+        title = "Card header",
+        plotOutput("distPlot")
+      )
+    )
+  )
 )
 
 server <- function(input, output) {
