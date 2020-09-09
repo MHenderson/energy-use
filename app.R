@@ -1,26 +1,26 @@
-library(googlesheets4)
+#library(googlesheets4)
 library(shiny)
 library(shinyMobile)
 library(simputation)
 library(tidyverse)
 
-#library(readxl)
+library(readxl)
 
 gas_rate <- .02607
 gas_standing <- .1062
 electricity_rate <- .13548
 electricity_standing <- .18073
 
-gs4_deauth()
+#gs4_deauth()
 
-energy_2019 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
-  range_read("2019")
+#energy_2019 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
+#  range_read("2019")
 
-energy_2020 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
-  range_read("2020")
+#energy_2020 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
+#  range_read("2020")
 
-#energy_2019 <- read_xlsx("energy.xlsx", sheet = "2019")
-#energy_2020 <- read_xlsx("energy.xlsx", sheet = "2020")
+energy_2019 <- read_xlsx("energy.xlsx", sheet = "2019")
+energy_2020 <- read_xlsx("energy.xlsx", sheet = "2020")
 
 energy <- bind_rows(energy_2019, energy_2020) %>%
   filter(!is.na(electricity)) %>%
@@ -68,6 +68,38 @@ ui = f7Page(
       intensity = 16,
       hover = TRUE,
       f7Card(
+        title = "Electricity usage yesterday",
+        textOutput("electricity_yesterday")
+      )
+    ),
+    f7Shadow(
+      intensity = 16,
+      hover = TRUE,
+      f7Card(
+        title = "Electricity cost yesterday",
+        textOutput("electricity_cost_yesterday")
+      )
+    ),
+    f7Shadow(
+      intensity = 16,
+      hover = TRUE,
+      f7Card(
+        title = "Gas usage yesterday",
+        textOutput("gas_yesterday")
+      )
+    ),
+    f7Shadow(
+      intensity = 16,
+      hover = TRUE,
+      f7Card(
+        title = "Gas cost yesterday",
+        textOutput("gas_cost_yesterday")
+      )
+    ),
+    f7Shadow(
+      intensity = 16,
+      hover = TRUE,
+      f7Card(
         title = "Daily use",
         plotOutput("kwHPlot"),
       )
@@ -84,6 +116,38 @@ ui = f7Page(
 )
 
 server <- function(input, output) {
+
+  output$electricity_yesterday <- renderText({
+    tidy_energy %>%
+      filter(fuel == "electricity") %>%
+      tail(1) %>%
+      pull(kwH) %>%
+      paste("kwH")
+  })
+
+  output$electricity_cost_yesterday <- renderText({
+    tidy_energy %>%
+      filter(fuel == "electricity") %>%
+      tail(1) %>%
+      pull(cost) %>%
+      paste("GBP")
+  })
+
+  output$gas_yesterday <- renderText({
+    tidy_energy %>%
+      filter(fuel == "gas") %>%
+      tail(1) %>%
+      pull(kwH) %>%
+      paste("kwH")
+  })
+
+  output$gas_cost_yesterday <- renderText({
+    tidy_energy %>%
+      filter(fuel == "gas") %>%
+      tail(1) %>%
+      pull(cost) %>%
+      paste("GBP")
+  })
 
   output$kwHPlot <- renderPlot({
     ggplot(tidy_energy, aes(x = date, y = kwH)) +
