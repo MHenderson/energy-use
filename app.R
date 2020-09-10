@@ -1,4 +1,5 @@
 #library(googlesheets4)
+library(mobileCharts)
 library(shiny)
 library(shinyMobile)
 library(simputation)
@@ -87,7 +88,7 @@ ui = f7Page(
           hover = TRUE,
           f7Card(
             title = "Daily use",
-            plotOutput("gas_kwHPlot"),
+            mobileOutput("gas_kwHPlot"),
           )
         ),
         f7Shadow(
@@ -95,7 +96,7 @@ ui = f7Page(
           hover = TRUE,
           f7Card(
             title = "Total cost",
-            plotOutput("gas_costPlot"),
+            mobileOutput("gas_costPlot"),
           )
         )
       ),
@@ -124,7 +125,7 @@ ui = f7Page(
           hover = TRUE,
           f7Card(
             title = "Daily use",
-            plotOutput("electricity_kwHPlot"),
+            mobileOutput("electricity_kwHPlot"),
           )
         ),
         f7Shadow(
@@ -132,7 +133,7 @@ ui = f7Page(
           hover = TRUE,
           f7Card(
             title = "Total cost",
-            plotOutput("electricity_costPlot"),
+            mobileOutput("electricity_costPlot"),
           )
         )
       )
@@ -174,50 +175,40 @@ server <- function(input, output) {
       paste("GBP")
   })
 
-  output$gas_kwHPlot <- renderPlot({
+  output$gas_kwHPlot <- render_mobile({
     tidy_energy %>%
       filter(fuel == "gas") %>%
-      ggplot(aes(x = date, y = kwH)) +
-        geom_point(alpha = .5) +
-        geom_smooth() +
-        theme_minimal() +
-        theme(legend.position = "none") +
-        facet_wrap(~ fuel, ncol = 1, scales = "free") +
-        xlab("")
+      mobile(aes(x = date, y = kwH)) %>%
+        mobile_point() %>%
+        mobile_scale_x(type = "timeCat", tickCount = 5) %>%
+        mobile_scale_y(type = "linear")
   })
 
-  output$gas_costPlot <- renderPlot({
+  output$gas_costPlot <- render_mobile({
     tidy_energy %>%
       filter(fuel == "gas") %>%
-      ggplot(aes(x = date, y = GBP)) +
-        geom_line(alpha = .5) +
-        theme_minimal() +
-        theme(legend.position = "none") +
-        facet_wrap(~ fuel, ncol = 1, scales = "free") +
-        xlab("")
+        mobile(aes(x = date, y = GBP)) %>%
+          mobile_line(alpha = .5) %>%
+          mobile_scale_x(type = "timeCat", tickCount = 5) %>%
+          mobile_scale_y(type = "linear")
     })
 
-  output$electricity_kwHPlot <- renderPlot({
+  output$electricity_kwHPlot <- render_mobile({
     tidy_energy %>%
       filter(fuel == "electricity") %>%
-      ggplot(aes(x = date, y = kwH)) +
-        geom_point(alpha = .5) +
-        geom_smooth() +
-        theme_minimal() +
-        theme(legend.position = "none") +
-        facet_wrap(~ fuel, ncol = 1, scales = "free") +
-        xlab("")
+      mobile(aes(x = date, y = kwH)) %>%
+        mobile_point() %>%
+        mobile_scale_x(type = "timeCat", tickCount = 5) %>%
+        mobile_scale_y(type = "linear")
   })
 
-  output$electricity_costPlot <- renderPlot({
+  output$electricity_costPlot <- render_mobile({
     tidy_energy %>%
       filter(fuel == "electricity") %>%
-      ggplot(aes(x = date, y = GBP)) +
-        geom_line(alpha = .5) +
-        theme_minimal() +
-        theme(legend.position = "none") +
-        facet_wrap(~ fuel, ncol = 1, scales = "free") +
-        xlab("")
+      mobile(aes(x = date, y = GBP)) %>%
+        mobile_line(alpha = .5) %>%
+        mobile_scale_x(type = "timeCat", tickCount = 5) %>%
+        mobile_scale_y(type = "linear")
   })
 
 }
