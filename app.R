@@ -1,27 +1,27 @@
-#library(googlesheets4)
+library(googlesheets4)
 library(mobileCharts)
 library(shiny)
 library(shinyMobile)
 library(simputation)
 library(tidyverse)
 
-library(readxl)
+#library(readxl)
 
 gas_rate <- .02607
 gas_standing <- .1062
 electricity_rate <- .13548
 electricity_standing <- .18073
 
-#gs4_deauth()
+gs4_deauth()
 
-#energy_2019 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
-#  range_read("2019")
+energy_2019 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
+  range_read("2019")
 
-#energy_2020 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
-#  range_read("2020")
+energy_2020 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
+  range_read("2020")
 
-energy_2019 <- read_xlsx("energy.xlsx", sheet = "2019")
-energy_2020 <- read_xlsx("energy.xlsx", sheet = "2020")
+#energy_2019 <- read_xlsx("energy.xlsx", sheet = "2019")
+#energy_2020 <- read_xlsx("energy.xlsx", sheet = "2020")
 
 energy <- bind_rows(energy_2019, energy_2020) %>%
   filter(!is.na(electricity)) %>%
@@ -65,7 +65,7 @@ ui = f7Page(
       #swipeable = TRUE,
       f7Tab(
         tabName = "Gas",
-        icon = f7Icon("folder"),
+        icon = f7Icon("flame"),
         active = TRUE,
         f7Shadow(
           intensity = 16,
@@ -102,7 +102,7 @@ ui = f7Page(
       ),
       f7Tab(
         tabName = "Electricity",
-        icon = f7Icon("folder"),
+        icon = f7Icon("lightbulb"),
         active = FALSE,
         f7Shadow(
           intensity = 16,
