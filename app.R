@@ -53,63 +53,88 @@ ui = f7Page(
   title = "My Energy Use",
   dark_mode = FALSE,
   init = f7Init(skin = "ios", theme = "light"),
-  f7SingleLayout(
+  f7TabLayout(
     navbar = f7Navbar(
       title = "My Energy Use",
       hairline = TRUE,
       shadow = TRUE
     ),
-    toolbar = f7Toolbar(
-      position = "bottom",
-      f7Link(label = "Link 1", src = "https://www.google.com"),
-      f7Link(label = "Link 2", src = "https://www.google.com", external = TRUE)
-    ),
-    f7Shadow(
-      intensity = 16,
-      hover = TRUE,
-      f7Card(
-        title = "Electricity usage yesterday",
-        textOutput("electricity_yesterday")
-      )
-    ),
-    f7Shadow(
-      intensity = 16,
-      hover = TRUE,
-      f7Card(
-        title = "Electricity cost yesterday",
-        textOutput("electricity_cost_yesterday")
-      )
-    ),
-    f7Shadow(
-      intensity = 16,
-      hover = TRUE,
-      f7Card(
-        title = "Gas usage yesterday",
-        textOutput("gas_yesterday")
-      )
-    ),
-    f7Shadow(
-      intensity = 16,
-      hover = TRUE,
-      f7Card(
-        title = "Gas cost yesterday",
-        textOutput("gas_cost_yesterday")
-      )
-    ),
-    f7Shadow(
-      intensity = 16,
-      hover = TRUE,
-      f7Card(
-        title = "Daily use",
-        plotOutput("kwHPlot"),
-      )
-    ),
-    f7Shadow(
-      intensity = 16,
-      hover = TRUE,
-      f7Card(
-        title = "Total cost",
-        plotOutput("costPlot"),
+    f7Tabs(
+      animated = TRUE,
+      #swipeable = TRUE,
+      f7Tab(
+        tabName = "Gas",
+        icon = f7Icon("folder"),
+        active = TRUE,
+        f7Shadow(
+          intensity = 16,
+          hover = TRUE,
+          f7Card(
+            title = "Gas cost yesterday",
+            textOutput("gas_cost_yesterday")
+          )
+        ),
+        f7Shadow(
+          intensity = 16,
+          hover = TRUE,
+          f7Card(
+           title = "Gas usage yesterday",
+           textOutput("gas_yesterday")
+          )
+        ),
+        f7Shadow(
+          intensity = 16,
+          hover = TRUE,
+          f7Card(
+            title = "Daily use",
+            plotOutput("gas_kwHPlot"),
+          )
+        ),
+        f7Shadow(
+          intensity = 16,
+          hover = TRUE,
+          f7Card(
+            title = "Total cost",
+            plotOutput("gas_costPlot"),
+          )
+        )
+      ),
+      f7Tab(
+        tabName = "Electricity",
+        icon = f7Icon("folder"),
+        active = FALSE,
+        f7Shadow(
+          intensity = 16,
+          hover = TRUE,
+          f7Card(
+            title = "Electricity cost yesterday",
+            textOutput("electricity_cost_yesterday")
+          )
+        ),
+        f7Shadow(
+          intensity = 16,
+          hover = TRUE,
+          f7Card(
+            title = "Electricity usage yesterday",
+            textOutput("electricity_yesterday")
+          )
+        ),
+        f7Shadow(
+          intensity = 16,
+          hover = TRUE,
+          f7Card(
+            title = "Daily use",
+            plotOutput("electricity_kwHPlot"),
+          )
+        ),
+        f7Shadow(
+          intensity = 16,
+          hover = TRUE,
+          f7Card(
+            title = "Total cost",
+            plotOutput("electricity_costPlot"),
+          )
+        )
       )
     )
   )
@@ -149,24 +174,51 @@ server <- function(input, output) {
       paste("GBP")
   })
 
-  output$kwHPlot <- renderPlot({
-    ggplot(tidy_energy, aes(x = date, y = kwH)) +
-      geom_point(alpha = .5) +
-      geom_smooth() +
-      theme_minimal() +
-      theme(legend.position = "none") +
-      facet_wrap(~ fuel, ncol = 1, scales = "free") +
-      xlab("")
+  output$gas_kwHPlot <- renderPlot({
+    tidy_energy %>%
+      filter(fuel == "gas") %>%
+      ggplot(aes(x = date, y = kwH)) +
+        geom_point(alpha = .5) +
+        geom_smooth() +
+        theme_minimal() +
+        theme(legend.position = "none") +
+        facet_wrap(~ fuel, ncol = 1, scales = "free") +
+        xlab("")
   })
 
-  output$costPlot <- renderPlot({
-    ggplot(tidy_energy, aes(x = date, y = GBP)) +
-      geom_line(alpha = .5) +
-      theme_minimal() +
-      theme(legend.position = "none") +
-      facet_wrap(~ fuel, ncol = 1, scales = "free") +
-      xlab("")
+  output$gas_costPlot <- renderPlot({
+    tidy_energy %>%
+      filter(fuel == "gas") %>%
+      ggplot(aes(x = date, y = GBP)) +
+        geom_line(alpha = .5) +
+        theme_minimal() +
+        theme(legend.position = "none") +
+        facet_wrap(~ fuel, ncol = 1, scales = "free") +
+        xlab("")
     })
+
+  output$electricity_kwHPlot <- renderPlot({
+    tidy_energy %>%
+      filter(fuel == "electricity") %>%
+      ggplot(aes(x = date, y = kwH)) +
+        geom_point(alpha = .5) +
+        geom_smooth() +
+        theme_minimal() +
+        theme(legend.position = "none") +
+        facet_wrap(~ fuel, ncol = 1, scales = "free") +
+        xlab("")
+  })
+
+  output$electricity_costPlot <- renderPlot({
+    tidy_energy %>%
+      filter(fuel == "electricity") %>%
+      ggplot(aes(x = date, y = GBP)) +
+        geom_line(alpha = .5) +
+        theme_minimal() +
+        theme(legend.position = "none") +
+        facet_wrap(~ fuel, ncol = 1, scales = "free") +
+        xlab("")
+  })
 
 }
 
