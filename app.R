@@ -1,29 +1,38 @@
-library(googlesheets4)
 library(mobileCharts)
 library(shiny)
 library(shinyMobile)
 library(simputation)
 library(tidyverse)
 
-#library(readxl)
-
 gas_rate <- .02607
 gas_standing <- .1062
 electricity_rate <- .13548
 electricity_standing <- .18073
 
-gs4_deauth()
+dev_mode <- FALSE
 
-energy_2019 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
-  range_read("2019")
+if(dev_mode) {
 
-energy_2020 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
-  range_read("2020")
+  energy_2019 <- readxl::read_xlsx("energy.xlsx", sheet = "2019")
+  energy_2020 <- readxl::read_xlsx("energy.xlsx", sheet = "2020")
+  energy_2021 <- readxl::read_xlsx("energy.xlsx", sheet = "2021")
 
-#energy_2019 <- read_xlsx("energy.xlsx", sheet = "2019")
-#energy_2020 <- read_xlsx("energy.xlsx", sheet = "2020")
+} else {
 
-energy <- bind_rows(energy_2019, energy_2020) %>%
+  googlesheets4::gs4_deauth()
+
+  energy_2019 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
+    googlesheets4::range_read("2019")
+
+  energy_2020 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
+    googlesheets4::range_read("2020")
+
+  energy_2021 <- "15nKk44UVxxex7OrhdV3bZRTD0NsniclZmfwtqL0ls18" %>%
+    googlesheets4::range_read("2021")
+
+}
+
+energy <- bind_rows(energy_2019, energy_2020, energy_2021) %>%
   filter(!is.na(electricity)) %>%
   filter(!is.na(gas))
 
