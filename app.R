@@ -97,6 +97,14 @@ ui = f7Page(
           intensity = 16,
           hover = TRUE,
           f7Card(
+            title = "Total cost",
+            mobileOutput("gas_totalPlot"),
+          )
+        ),
+        f7Shadow(
+          intensity = 16,
+          hover = TRUE,
+          f7Card(
             title = "Monthly bill",
             mobileOutput("gas_monthlyPlot"),
           )
@@ -107,14 +115,6 @@ ui = f7Page(
           f7Card(
             title = "Annual bill",
             mobileOutput("gas_annualPlot"),
-          )
-        ),
-        f7Shadow(
-          intensity = 16,
-          hover = TRUE,
-          f7Card(
-            title = "Total cost",
-            mobileOutput("gas_totalPlot"),
           )
         )
       ),
@@ -150,6 +150,14 @@ ui = f7Page(
           intensity = 16,
           hover = TRUE,
           f7Card(
+            title = "Total cost",
+            mobileOutput("electricity_totalPlot"),
+          )
+        ),
+        f7Shadow(
+          intensity = 16,
+          hover = TRUE,
+          f7Card(
             title = "Monthly bill",
             mobileOutput("electricity_monthlyPlot"),
           )
@@ -160,14 +168,6 @@ ui = f7Page(
           f7Card(
             title = "Annual bill",
             mobileOutput("electricity_annualPlot"),
-          )
-        ),
-        f7Shadow(
-          intensity = 16,
-          hover = TRUE,
-          f7Card(
-            title = "Total cost",
-            mobileOutput("electricity_totalPlot"),
           )
         )
       )
@@ -216,7 +216,7 @@ server <- function(input, output) {
   output$gas_kwHPlot <- render_mobile({
     tidy_energy %>%
       filter(fuel == "gas", var == "kwh") %>%
-      mobile(aes(x = date, y = value)) %>%
+      mobile(aes(x = date, y = value, colour = supplier)) %>%
         mobile_point() %>%
         mobile_scale_x(type = "timeCat", tickCount = 5) %>%
         mobile_scale_y(type = "linear")
@@ -225,8 +225,9 @@ server <- function(input, output) {
   output$gas_totalPlot <- render_mobile({
     tidy_energy %>%
       filter(fuel == "gas", var == "total") %>%
-        mobile(aes(x = date, y = value)) %>%
+        mobile(aes(x = date, y = value, colour = supplier)) %>%
           mobile_line(alpha = .5) %>%
+          mobile_area() %>%
           mobile_scale_x(type = "timeCat", tickCount = 5) %>%
           mobile_scale_y(type = "linear")
     })
@@ -234,7 +235,7 @@ server <- function(input, output) {
   output$electricity_kwHPlot <- render_mobile({
     tidy_energy %>%
       filter(fuel == "electricity", var == "kwh") %>%
-      mobile(aes(x = date, y = value)) %>%
+      mobile(aes(x = date, y = value, colour = supplier)) %>%
         mobile_point() %>%
         mobile_scale_x(type = "timeCat", tickCount = 5) %>%
         mobile_scale_y(type = "linear")
@@ -243,8 +244,9 @@ server <- function(input, output) {
   output$electricity_totalPlot <- render_mobile({
     tidy_energy %>%
       filter(fuel == "electricity", var == "total") %>%
-      mobile(aes(x = date, y = value)) %>%
+      mobile(aes(x = date, y = value, colour = supplier)) %>%
         mobile_line(alpha = .5) %>%
+        mobile_area() %>%
         mobile_scale_x(type = "timeCat", tickCount = 5) %>%
         mobile_scale_y(type = "linear")
   })
@@ -254,6 +256,8 @@ server <- function(input, output) {
       filter(fuel == "electricity") %>%
       mobile(aes(x = ymd, y = value)) %>%
         mobile_line(alpha = .5) %>%
+        mobile_area() %>%
+        mobile_point() %>%
         mobile_scale_x(type = "timeCat", tickCount = 5) %>%
         mobile_scale_y(type = "linear")
   })
@@ -262,9 +266,11 @@ server <- function(input, output) {
     monthly_bills %>%
       filter(fuel == "gas") %>%
       mobile(aes(x = ymd, y = value)) %>%
-      mobile_line(alpha = .5) %>%
-      mobile_scale_x(type = "timeCat", tickCount = 5) %>%
-      mobile_scale_y(type = "linear")
+        mobile_line(alpha = .5) %>%
+        mobile_area() %>%
+        mobile_point() %>%
+        mobile_scale_x(type = "timeCat", tickCount = 5) %>%
+        mobile_scale_y(type = "linear")
   })
 
   output$electricity_annualPlot <- render_mobile({
@@ -272,6 +278,8 @@ server <- function(input, output) {
       filter(fuel == "electricity") %>%
       mobile(aes(x = year, y = value)) %>%
         mobile_line(alpha = .5) %>%
+        mobile_area() %>%
+        mobile_point() %>%
         mobile_scale_y(type = "linear")
   })
 
@@ -280,6 +288,8 @@ server <- function(input, output) {
       filter(fuel == "gas") %>%
       mobile(aes(x = year, y = value)) %>%
         mobile_line(alpha = .5) %>%
+        mobile_area() %>%
+        mobile_point() %>%
         mobile_scale_y(type = "linear")
   })
 
