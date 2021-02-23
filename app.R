@@ -4,12 +4,7 @@ library(shinyMobile)
 library(simputation)
 library(tidyverse)
 
-gas_rate <- .02607
-gas_standing <- .1062
-electricity_rate <- .13548
-electricity_standing <- .18073
-
-dev_mode <- FALSE
+dev_mode <- TRUE
 
 if(dev_mode) {
 
@@ -35,46 +30,24 @@ if(dev_mode) {
 
 }
 
-prep_tidy_energy <- function(energy) {
-  energy %>%
-    filter(!is.na(electricity)) %>%
-    filter(!is.na(gas)) %>%
-    impute_lm(gas ~ date) %>%
-    impute_lm(electricity ~ date) %>%
-    arrange(date) %>%
-    select(date, gas, electricity) %>%
-    gather("fuel", "kwH", c("gas", "electricity")) %>%
-    mutate(
-      cost = case_when(
-        fuel == "gas" ~ round(kwH * gas_rate + gas_standing, 2),
-        fuel == "electricity" ~ round(kwH * electricity_rate + electricity_standing, 2)
-      )
-    ) %>%
-    group_by(fuel) %>%
-    mutate(
-      GBP = cumsum(cost)
-    ) %>%
-    mutate(
-      year = lubridate::year(date),
-      month = lubridate::month(date)
-    )
-}
+energy <- bind_rows(energy_2019, energy_2020, energy_2021)
 
-tidy_energy <- bind_rows(energy_2019, energy_2020, energy_2021) %>%
-  prep_tidy_energy()
+tidy_energy <- prep_tidy_energy(energy)
 
 monthly_bills <- tidy_energy %>%
+  filter(var == "cost") %>%
   group_by(fuel, year, month) %>%
   summarise(
-    cost = sum(cost)
+    value = sum(value)
   ) %>%
   ungroup() %>%
   mutate(ymd = lubridate::ymd(paste(year, month, 1, sep = "-")))
 
 annual_bill <- tidy_energy %>%
+  filter(var == "cost") %>%
   group_by(fuel, year) %>%
   summarise(
-    cost = sum(cost)
+    value = sum(value)
   ) %>%
   ungroup()
 
@@ -206,40 +179,44 @@ server <- function(input, output) {
 
   output$electricity_yesterday <- renderText({
     tidy_energy %>%
-      filter(fuel == "electricity") %>%
+      filter(fuel == "electricity", var == "kwh") %>%
       tail(1) %>%
-      pull(kwH) %>%
+      pull(value) %>%
       paste("kwH")
   })
 
   output$electricity_cost_yesterday <- renderText({
     tidy_energy %>%
-      filter(fuel == "electricity") %>%
+      filter(fuel == "electricity", var == "cost") %>%
       tail(1) %>%
-      pull(cost) %>%
+      pull(value) %>%
+      `/`(100) %>%
+      round(2) %>%
       paste("GBP")
   })
 
   output$gas_yesterday <- renderText({
     tidy_energy %>%
-      filter(fuel == "gas") %>%
+      filter(fuel == "gas", var == "kwh") %>%
       tail(1) %>%
-      pull(kwH) %>%
+      pull(value) %>%
       paste("kwH")
   })
 
   output$gas_cost_yesterday <- renderText({
     tidy_energy %>%
-      filter(fuel == "gas") %>%
+      filter(fuel == "gas", var == "cost") %>%
       tail(1) %>%
-      pull(cost) %>%
+      pull(value) %>%
+      `/`(100) %>%
+      round(2) %>%
       paste("GBP")
   })
 
   output$gas_kwHPlot <- render_mobile({
     tidy_energy %>%
-      filter(fuel == "gas") %>%
-      mobile(aes(x = date, y = kwH)) %>%
+      filter(fuel == "gas", var == "kwh") %>%
+      mobile(aes(x = date, y = value)) %>%
         mobile_point() %>%
         mobile_scale_x(type = "timeCat", tickCount = 5) %>%
         mobile_scale_y(type = "linear")
@@ -247,8 +224,8 @@ server <- function(input, output) {
 
   output$gas_totalPlot <- render_mobile({
     tidy_energy %>%
-      filter(fuel == "gas") %>%
-        mobile(aes(x = date, y = GBP)) %>%
+      filter(fuel == "gas", var == "total") %>%
+        mobile(aes(x = date, y = value)) %>%
           mobile_line(alpha = .5) %>%
           mobile_scale_x(type = "timeCat", tickCount = 5) %>%
           mobile_scale_y(type = "linear")
@@ -256,8 +233,8 @@ server <- function(input, output) {
 
   output$electricity_kwHPlot <- render_mobile({
     tidy_energy %>%
-      filter(fuel == "electricity") %>%
-      mobile(aes(x = date, y = kwH)) %>%
+      filter(fuel == "electricity", var == "kwh") %>%
+      mobile(aes(x = date, y = value)) %>%
         mobile_point() %>%
         mobile_scale_x(type = "timeCat", tickCount = 5) %>%
         mobile_scale_y(type = "linear")
@@ -265,8 +242,8 @@ server <- function(input, output) {
 
   output$electricity_totalPlot <- render_mobile({
     tidy_energy %>%
-      filter(fuel == "electricity") %>%
-      mobile(aes(x = date, y = GBP)) %>%
+      filter(fuel == "electricity", var == "total") %>%
+      mobile(aes(x = date, y = value)) %>%
         mobile_line(alpha = .5) %>%
         mobile_scale_x(type = "timeCat", tickCount = 5) %>%
         mobile_scale_y(type = "linear")
@@ -275,7 +252,7 @@ server <- function(input, output) {
   output$electricity_monthlyPlot <- render_mobile({
     monthly_bills %>%
       filter(fuel == "electricity") %>%
-      mobile(aes(x = ymd, y = cost)) %>%
+      mobile(aes(x = ymd, y = value)) %>%
         mobile_line(alpha = .5) %>%
         mobile_scale_x(type = "timeCat", tickCount = 5) %>%
         mobile_scale_y(type = "linear")
@@ -284,7 +261,7 @@ server <- function(input, output) {
   output$gas_monthlyPlot <- render_mobile({
     monthly_bills %>%
       filter(fuel == "gas") %>%
-      mobile(aes(x = ymd, y = cost)) %>%
+      mobile(aes(x = ymd, y = value)) %>%
       mobile_line(alpha = .5) %>%
       mobile_scale_x(type = "timeCat", tickCount = 5) %>%
       mobile_scale_y(type = "linear")
@@ -293,7 +270,7 @@ server <- function(input, output) {
   output$electricity_annualPlot <- render_mobile({
     annual_bill %>%
       filter(fuel == "electricity") %>%
-      mobile(aes(x = year, y = cost)) %>%
+      mobile(aes(x = year, y = value)) %>%
         mobile_line(alpha = .5) %>%
         mobile_scale_y(type = "linear")
   })
@@ -301,7 +278,7 @@ server <- function(input, output) {
   output$gas_annualPlot <- render_mobile({
     annual_bill %>%
       filter(fuel == "gas") %>%
-      mobile(aes(x = year, y = cost)) %>%
+      mobile(aes(x = year, y = value)) %>%
         mobile_line(alpha = .5) %>%
         mobile_scale_y(type = "linear")
   })
