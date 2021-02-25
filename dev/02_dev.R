@@ -35,6 +35,8 @@ golem::add_module( name = "gas_total_cost_plot" ) # Name of the module
 golem::add_module( name = "gas_bills_plot" ) # Name of the module
 golem::add_module( name = "gas_annual_cost_plot" ) # Name of the module
 
+golem::add_module( name = "annual_cost_plot" ) # Name of the module
+
 ## Add helper functions ----
 ## Creates ftc_* and utils_*
 golem::add_fct( "helpers" )
