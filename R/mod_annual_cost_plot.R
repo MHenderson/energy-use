@@ -17,12 +17,12 @@ mod_annual_cost_plot_ui <- function(id){
 #' annual_cost_plot Server Functions
 #'
 #' @noRd
-mod_annual_cost_plot_server <- function(id, annual_summary, fuel){
+mod_annual_cost_plot_server <- function(id, annual_summary, fuel_){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     output$annual_cost_plot <- renderPlot({
       annual_summary %>%
-        dplyr::filter(fuel == fuel) %>%
+        dplyr::filter(fuel == fuel_) %>%
         ggplot2::ggplot(ggplot2::aes(x = year, y = value)) +
         ggplot2::geom_line(alpha = .5) +
         ggplot2::geom_point()
