@@ -42,6 +42,8 @@ golem::add_module( name = "total_cost_plot" ) # Name of the module
 golem::add_module( name = "usage_plot" ) # Name of the module
 golem::add_module( name = "usage_yesterday_text" ) # Name of the module
 
+golem::add_module( name = "annual_cost_plot" ) # Name of the module
+
 ## Add helper functions ----
 ## Creates ftc_* and utils_*
 golem::add_fct( "helpers" )
