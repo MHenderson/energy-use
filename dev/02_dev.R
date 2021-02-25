@@ -29,6 +29,7 @@ golem::add_module( name = "electricity_annual_cost_plot" ) # Name of the module
 golem::add_module( name = "gas_cost_yesterday_text" ) # Name of the module
 golem::add_module( name = "gas_usage_yesterday_text" ) # Name of the module
 golem::add_module( name = "gas_usage_plot" ) # Name of the module
+golem::add_module( name = "gas_total_cost_plot" ) # Name of the module
 
 ## Add helper functions ----
 ## Creates ftc_* and utils_*

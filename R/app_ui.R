@@ -19,7 +19,8 @@ app_ui <- function(request) {
       mod_electricity_annual_cost_plot_ui("electricity_annual_cost_plot_ui_1"),
       mod_gas_cost_yesterday_text_ui("gas_cost_yesterday_text_ui_1"),
       mod_gas_usage_yesterday_text_ui("gas_usage_yesterday_text_ui_1"),
-      mod_gas_usage_plot_ui("gas_usage_plot_ui_1")
+      mod_gas_usage_plot_ui("gas_usage_plot_ui_1"),
+      mod_gas_total_cost_plot_ui("gas_total_cost_plot_ui_1")
     )
   )
 }
