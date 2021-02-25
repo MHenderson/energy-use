@@ -26,7 +26,7 @@ app_ui <- function(request) {
             shinydashboard::tabItem(tabName = "electricity",
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_electricity_usage_yesterday_text_ui("electricity_usage_yesterday_text_ui_1"),
+                  mod_usage_yesterday_text_ui("usage_yesterday_text_ui_electricity"),
                   width = 2, title = "Usage (yesterday)"
                 ),
                 shinydashboardPlus::box(
@@ -62,7 +62,7 @@ app_ui <- function(request) {
             shinydashboard::tabItem(tabName = "gas",
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_gas_usage_yesterday_text_ui("gas_usage_yesterday_text_ui_1"),
+                  mod_usage_yesterday_text_ui("usage_yesterday_text_ui_gas"),
                   width = 2, title = "Usage (yesterday)"
                 ),
                 shinydashboardPlus::box(
