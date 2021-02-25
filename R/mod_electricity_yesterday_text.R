@@ -17,15 +17,10 @@ mod_electricity_yesterday_text_ui <- function(id){
 #' electricity_yesterday_text Server Functions
 #'
 #' @noRd
-mod_electricity_yesterday_text_server <- function(id){
+mod_electricity_yesterday_text_server <- function(id, tidy_energy){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     output$electricity_yesterday <- renderText({
-      energy_2019 <- readxl::read_xlsx("energy.xlsx", sheet = "2019")
-      energy_2020 <- readxl::read_xlsx("energy.xlsx", sheet = "2020")
-      energy_2021 <- readxl::read_xlsx("energy.xlsx", sheet = "2021")
-      energy <- dplyr::bind_rows(energy_2019, energy_2020, energy_2021)
-      tidy_energy <- prep_tidy_energy(energy)
       tidy_energy %>%
         dplyr::filter(fuel == "electricity", var == "kwh") %>%
         utils::tail(1) %>%
