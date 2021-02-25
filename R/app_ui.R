@@ -11,7 +11,8 @@ app_ui <- function(request) {
     # List the first level UI elements here
     fluidPage(
       h1("energyuse"),
-      mod_electricity_yesterday_text_ui("electricity_yesterday_text_ui_1")
+      mod_electricity_yesterday_text_ui("electricity_yesterday_text_ui_1"),
+      mod_electricity_usage_plot_ui("electricity_usage_plot_ui_1")
     )
   )
 }
