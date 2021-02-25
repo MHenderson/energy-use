@@ -15,7 +15,9 @@ Imports:
     htmltools,
     dplyr,
     magrittr,
-    ggplot2
+    ggplot2,
+    shinydashboard,
+    shinydashboardPlus
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1

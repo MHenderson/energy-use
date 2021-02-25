@@ -8,22 +8,99 @@ app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
+
     # List the first level UI elements here
-    fluidPage(
-      h1("energyuse"),
-      mod_electricity_usage_yesterday_text_ui("electricity_usage_yesterday_text_ui_1"),
-      mod_electricity_cost_yesterday_text_ui("electricity_cost_yesterday_text_ui_1"),
-      mod_electricity_usage_plot_ui("electricity_usage_plot_ui_1"),
-      mod_electricity_total_cost_plot_ui("electricity_total_cost_plot_ui_1"),
-      mod_electricity_bills_plot_ui("electricity_bills_plot_ui_1"),
-      mod_electricity_annual_cost_plot_ui("electricity_annual_cost_plot_ui_1"),
-      mod_gas_cost_yesterday_text_ui("gas_cost_yesterday_text_ui_1"),
-      mod_gas_usage_yesterday_text_ui("gas_usage_yesterday_text_ui_1"),
-      mod_gas_usage_plot_ui("gas_usage_plot_ui_1"),
-      mod_gas_total_cost_plot_ui("gas_total_cost_plot_ui_1"),
-      mod_gas_bills_plot_ui("gas_bills_plot_ui_1"),
-      mod_gas_annual_cost_plot_ui("gas_annual_cost_plot_ui_1")
-    )
+      shinydashboardPlus::dashboardPage(
+        options = list(sidebarExpandOnHover = TRUE),
+        header = shinydashboardPlus::dashboardHeader(),
+        sidebar = shinydashboardPlus::dashboardSidebar(
+          minified = TRUE,
+          collapsed = TRUE,
+          shinydashboard::sidebarMenu(
+            shinydashboard::menuItem("Gas", tabName = "gas", icon = icon("fire")),
+            shinydashboard::menuItem("Electricity", tabName = "electricity", icon = icon("bolt"))
+          )
+        ),
+        body = shinydashboard::dashboardBody(
+          shinydashboard::tabItems(
+            shinydashboard::tabItem(tabName = "electricity",
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_electricity_usage_yesterday_text_ui("electricity_usage_yesterday_text_ui_1"),
+                  width = 2, title = "Usage (yesterday)"
+                ),
+                shinydashboardPlus::box(
+                  mod_electricity_cost_yesterday_text_ui("electricity_cost_yesterday_text_ui_1"),
+                  width = 2, title = "Cost (yesterday)"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_electricity_usage_plot_ui("electricity_usage_plot_ui_1"),
+                  width = 12, title = "Usage"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_electricity_total_cost_plot_ui("electricity_total_cost_plot_ui_1"),
+                  width = 12, title = "Total cost"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_electricity_bills_plot_ui("electricity_bills_plot_ui_1"),
+                  width = 12, title = "Bills"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_electricity_annual_cost_plot_ui("electricity_annual_cost_plot_ui_1"),
+                  width = 12, title = "Annual cost"
+                )
+              )
+            ),
+            shinydashboard::tabItem(tabName = "gas",
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_gas_usage_yesterday_text_ui("gas_usage_yesterday_text_ui_1"),
+                  width = 2, title = "Usage (yesterday)"
+                ),
+                shinydashboardPlus::box(
+                  mod_gas_cost_yesterday_text_ui("gas_cost_yesterday_text_ui_1"),
+                  width = 2, title = "Cost (yesterday)"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_gas_usage_plot_ui("gas_usage_plot_ui_1"),
+                  width = 12, title = "Usage"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_gas_total_cost_plot_ui("gas_total_cost_plot_ui_1"),
+                  width = 12, title = "Total cost"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_gas_bills_plot_ui("gas_bills_plot_ui_1"),
+                  width = 12, title = "Bills"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_gas_annual_cost_plot_ui("gas_annual_cost_plot_ui_1"),
+                  width = 12, title = "Annual cost"
+                )
+              )
+            )
+          )
+
+        ),
+        controlbar = shinydashboardPlus::dashboardControlbar(),
+        title = "My Energy Use"
+      )
   )
 }
 
