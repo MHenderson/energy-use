@@ -29,15 +29,15 @@ app_server <- function( input, output, session ) {
   mod_electricity_usage_yesterday_text_server("electricity_usage_yesterday_text_ui_1", tidy_energy)
   mod_electricity_usage_plot_server("electricity_usage_plot_ui_1", tidy_energy)
   mod_electricity_total_cost_plot_server("electricity_total_cost_plot_ui_1", tidy_energy)
-  mod_electricity_bills_plot_server("electricity_bills_plot_ui_1", billing)
   mod_gas_usage_yesterday_text_server("gas_usage_yesterday_text_ui_1", tidy_energy)
   mod_gas_usage_plot_server("gas_usage_plot_ui_1", tidy_energy)
   mod_gas_total_cost_plot_server("gas_total_cost_plot_ui_1", tidy_energy)
-  mod_gas_bills_plot_server("gas_bills_plot_ui_1", billing)
 
   mod_annual_cost_plot_server("annual_cost_plot_ui_gas", annual_summary, "gas")
   mod_cost_yesterday_text_server("cost_yesterday_text_ui_gas", tidy_energy, "gas")
+  mod_bills_plot_server("bills_plot_ui_gas", billing, "gas")
 
   mod_annual_cost_plot_server("annual_cost_plot_ui_electricity", annual_summary, "electricity")
   mod_cost_yesterday_text_server("cost_yesterday_text_ui_electricity", tidy_energy, "electricity")
+  mod_bills_plot_server("bills_plot_ui_electricity", billing, "electricity")
 }

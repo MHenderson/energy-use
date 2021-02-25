@@ -48,7 +48,7 @@ app_ui <- function(request) {
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_electricity_bills_plot_ui("electricity_bills_plot_ui_1"),
+                  mod_bills_plot_ui("bills_plot_ui_electricity"),
                   width = 12, title = "Bills"
                 )
               ),
@@ -84,7 +84,7 @@ app_ui <- function(request) {
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_gas_bills_plot_ui("gas_bills_plot_ui_1"),
+                  mod_bills_plot_ui("bills_plot_ui_gas"),
                   width = 12, title = "Bills"
                 )
               ),
