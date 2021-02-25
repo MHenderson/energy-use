@@ -42,7 +42,7 @@ app_ui <- function(request) {
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_electricity_total_cost_plot_ui("electricity_total_cost_plot_ui_1"),
+                  mod_total_cost_plot_ui("total_cost_plot_ui_electricity"),
                   width = 12, title = "Total cost"
                 )
               ),
@@ -78,7 +78,7 @@ app_ui <- function(request) {
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_gas_total_cost_plot_ui("gas_total_cost_plot_ui_1"),
+                  mod_total_cost_plot_ui("total_cost_plot_ui_gas"),
                   width = 12, title = "Total cost"
                 )
               ),

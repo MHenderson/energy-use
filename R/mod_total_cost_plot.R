@@ -1,4 +1,4 @@
-#' gas_total_cost_plot UI Function
+#' total_cost_plot UI Function
 #'
 #' @description A shiny Module.
 #'
@@ -7,22 +7,22 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_gas_total_cost_plot_ui <- function(id){
+mod_total_cost_plot_ui <- function(id){
   ns <- NS(id)
   tagList(
-    plotOutput(ns("gas_total_cost_plot"))
+    plotOutput(ns("total_cost_plot"))
   )
 }
 
-#' gas_total_cost_plot Server Functions
+#' total_cost_plot Server Functions
 #'
 #' @noRd
-mod_gas_total_cost_plot_server <- function(id, tidy_energy){
+mod_total_cost_plot_server <- function(id, tidy_energy, fuel_){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    output$gas_total_cost_plot <- renderPlot({
+    output$total_cost_plot <- renderPlot({
       tidy_energy %>%
-        dplyr::filter(fuel == "electricity", var == "total") %>%
+        dplyr::filter(fuel == fuel_, var == "total") %>%
         ggplot2::ggplot(ggplot2::aes(x = date, y = value, colour = supplier)) +
         ggplot2::geom_line()
     })
@@ -30,7 +30,7 @@ mod_gas_total_cost_plot_server <- function(id, tidy_energy){
 }
 
 ## To be copied in the UI
-# mod_gas_total_cost_plot_ui("gas_total_cost_plot_ui_1")
+# mod_total_cost_plot_ui("total_cost_plot_ui_1")
 
 ## To be copied in the server
-# mod_gas_total_cost_plot_server("gas_total_cost_plot_ui_1")
+# mod_total_cost_plot_server("total_cost_plot_ui_1")
