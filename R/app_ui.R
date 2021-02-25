@@ -30,7 +30,7 @@ app_ui <- function(request) {
                   width = 2, title = "Usage (yesterday)"
                 ),
                 shinydashboardPlus::box(
-                  mod_electricity_cost_yesterday_text_ui("electricity_cost_yesterday_text_ui_1"),
+                  mod_cost_yesterday_text_ui("cost_yesterday_text_ui_electricity"),
                   width = 2, title = "Cost (yesterday)"
                 )
               ),
@@ -66,7 +66,7 @@ app_ui <- function(request) {
                   width = 2, title = "Usage (yesterday)"
                 ),
                 shinydashboardPlus::box(
-                  mod_gas_cost_yesterday_text_ui("gas_cost_yesterday_text_ui_1"),
+                  mod_cost_yesterday_text_ui("cost_yesterday_text_ui_gas"),
                   width = 2, title = "Cost (yesterday)"
                 )
               ),

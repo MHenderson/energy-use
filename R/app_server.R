@@ -28,16 +28,16 @@ app_server <- function( input, output, session ) {
   # List the first level callModules here
   mod_electricity_usage_yesterday_text_server("electricity_usage_yesterday_text_ui_1", tidy_energy)
   mod_electricity_usage_plot_server("electricity_usage_plot_ui_1", tidy_energy)
-  mod_electricity_cost_yesterday_text_server("electricity_cost_yesterday_text_ui_1", tidy_energy)
   mod_electricity_total_cost_plot_server("electricity_total_cost_plot_ui_1", tidy_energy)
   mod_electricity_bills_plot_server("electricity_bills_plot_ui_1", billing)
-  mod_electricity_annual_cost_plot_server("electricity_annual_cost_plot_ui_1", annual_summary)
-  mod_gas_cost_yesterday_text_server("gas_cost_yesterday_text_ui_1", tidy_energy)
   mod_gas_usage_yesterday_text_server("gas_usage_yesterday_text_ui_1", tidy_energy)
   mod_gas_usage_plot_server("gas_usage_plot_ui_1", tidy_energy)
   mod_gas_total_cost_plot_server("gas_total_cost_plot_ui_1", tidy_energy)
   mod_gas_bills_plot_server("gas_bills_plot_ui_1", billing)
-  mod_gas_annual_cost_plot_server("gas_annual_cost_plot_ui_1", annual_summary)
+
   mod_annual_cost_plot_server("annual_cost_plot_ui_gas", annual_summary, "gas")
+  mod_cost_yesterday_text_server("cost_yesterday_text_ui_gas", tidy_energy, "gas")
+
   mod_annual_cost_plot_server("annual_cost_plot_ui_electricity", annual_summary, "electricity")
+  mod_cost_yesterday_text_server("cost_yesterday_text_ui_electricity", tidy_energy, "electricity")
 }
