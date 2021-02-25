@@ -32,4 +32,6 @@ app_server <- function( input, output, session ) {
   mod_electricity_total_cost_plot_server("electricity_total_cost_plot_ui_1", tidy_energy)
   mod_electricity_bills_plot_server("electricity_bills_plot_ui_1", billing)
   mod_electricity_annual_cost_plot_server("electricity_annual_cost_plot_ui_1", annual_summary)
+  mod_gas_cost_yesterday_text_server("gas_cost_yesterday_text_ui_1", tidy_energy)
+  mod_gas_usage_yesterday_text_server("gas_usage_yesterday_text_ui_1", tidy_energy)
 }
