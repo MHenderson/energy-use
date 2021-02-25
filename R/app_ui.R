@@ -36,7 +36,7 @@ app_ui <- function(request) {
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_electricity_usage_plot_ui("electricity_usage_plot_ui_1"),
+                  mod_usage_plot_ui("usage_plot_ui_electricity"),
                   width = 12, title = "Usage"
                 )
               ),
@@ -72,7 +72,7 @@ app_ui <- function(request) {
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_gas_usage_plot_ui("gas_usage_plot_ui_1"),
+                  mod_usage_plot_ui("usage_plot_ui_gas"),
                   width = 12, title = "Usage"
                 )
               ),

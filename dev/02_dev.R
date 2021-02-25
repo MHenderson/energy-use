@@ -23,20 +23,21 @@ usethis::use_package( "shinydashboardPlus" )
 ## Add modules ----
 ## Create a module infrastructure in R/
 #golem::add_module( name = "electricity_cost_yesterday_text" ) # Name of the module
-golem::add_module( name = "electricity_usage_yesterday_text" ) # Name of the module
+#golem::add_module( name = "electricity_usage_yesterday_text" ) # Name of the module
 golem::add_module( name = "electricity_usage_plot" ) # Name of the module
 golem::add_module( name = "electricity_total_cost_plot" ) # Name of the module
 #golem::add_module( name = "electricity_bills_plot" ) # Name of the module
 #golem::add_module( name = "electricity_annual_cost_plot" ) # Name of the module
 #golem::add_module( name = "gas_cost_yesterday_text" ) # Name of the module
-golem::add_module( name = "gas_usage_yesterday_text" ) # Name of the module
+#golem::add_module( name = "gas_usage_yesterday_text" ) # Name of the module
 golem::add_module( name = "gas_usage_plot" ) # Name of the module
 golem::add_module( name = "gas_total_cost_plot" ) # Name of the module
 #golem::add_module( name = "gas_bills_plot" ) # Name of the module
 #golem::add_module( name = "gas_annual_cost_plot" ) # Name of the module
 
-golem::add_module( name = "usage_yesterday_text" ) # Name of the module
 golem::add_module( name = "cost_yesterday_text" ) # Name of the module
+golem::add_module( name = "usage_yesterday_text" ) # Name of the module
+golem::add_module( name = "usage_plot" ) # Name of the module
 golem::add_module( name = "bills_plot" ) # Name of the module
 golem::add_module( name = "annual_cost_plot" ) # Name of the module
 
