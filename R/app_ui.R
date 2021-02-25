@@ -54,7 +54,7 @@ app_ui <- function(request) {
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_electricity_annual_cost_plot_ui("electricity_annual_cost_plot_ui_1"),
+                  mod_annual_cost_plot_ui("annual_cost_plot_ui_electricity"),
                   width = 12, title = "Annual cost"
                 )
               )
@@ -90,7 +90,7 @@ app_ui <- function(request) {
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_gas_annual_cost_plot_ui("gas_annual_cost_plot_ui_1"),
+                  mod_annual_cost_plot_ui("annual_cost_plot_ui_gas"),
                   width = 12, title = "Annual cost"
                 )
               )
