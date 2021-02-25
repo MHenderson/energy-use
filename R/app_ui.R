@@ -14,7 +14,8 @@ app_ui <- function(request) {
       mod_electricity_usage_yesterday_text_ui("electricity_usage_yesterday_text_ui_1"),
       mod_electricity_cost_yesterday_text_ui("electricity_cost_yesterday_text_ui_1"),
       mod_electricity_usage_plot_ui("electricity_usage_plot_ui_1"),
-      mod_electricity_total_cost_plot_ui("electricity_total_cost_plot_ui_1")
+      mod_electricity_total_cost_plot_ui("electricity_total_cost_plot_ui_1"),
+      mod_electricity_bills_plot_ui("electricity_bills_plot_ui_1")
     )
   )
 }
