@@ -5,6 +5,7 @@
 #' @import shiny
 #' @noRd
 app_ui <- function(request) {
+
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -15,15 +16,11 @@ app_ui <- function(request) {
         header = shinydashboardPlus::dashboardHeader(),
         sidebar = shinydashboardPlus::dashboardSidebar(
           minified = TRUE,
-          collapsed = TRUE,
-          shinydashboard::sidebarMenu(
-            shinydashboard::menuItem("Gas", tabName = "gas", icon = icon("fire")),
-            shinydashboard::menuItem("Electricity", tabName = "electricity", icon = icon("bolt"))
-          )
+          collapsed = TRUE
         ),
         body = shinydashboard::dashboardBody(
-          shinydashboard::tabItems(
-            shinydashboard::tabItem(tabName = "electricity",
+          fluidRow(
+            column(width = 6,
               fluidRow(
                 shinydashboardPlus::box(
                   mod_usage_yesterday_text_ui("usage_yesterday_text_ui_electricity"),
@@ -59,7 +56,7 @@ app_ui <- function(request) {
                 )
               )
             ),
-            shinydashboard::tabItem(tabName = "gas",
+            column(width = 6,
               fluidRow(
                 shinydashboardPlus::box(
                   mod_usage_yesterday_text_ui("usage_yesterday_text_ui_gas"),
