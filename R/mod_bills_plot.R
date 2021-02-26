@@ -20,15 +20,22 @@ mod_bills_plot_ui <- function(id){
 mod_bills_plot_server <- function(id, billing, fuel_){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+    X <- billing %>%
+      dplyr::filter(fuel == fuel_) %>%
+      dplyr::mutate(
+        GBP = round(value/100, 2),
+        GBP_s = sprintf("£%.2f", GBP)
+      )
     output$bills_plot <- plotly::renderPlotly({
-      billing %>%
-        dplyr::filter(fuel == fuel_) %>%
-        ggplot2::ggplot(ggplot2::aes(x = ymd, y = value/100)) +
+      X %>%
+        ggplot2::ggplot(ggplot2::aes(x = ymd, y = GBP)) +
         ggplot2::geom_line(alpha = .5) +
+        ggplot2::geom_text(data = X %>% dplyr::filter(dplyr::row_number() %% 3 == 1), ggplot2::aes(label = GBP_s), nudge_y = 3) +
         ggplot2::geom_point() +
         ggplot2::geom_smooth() +
         ggplot2::theme_minimal() +
-        ggplot2::labs(x = "", y = "GBP")
+        ggplot2::labs(x = "", y = "GBP") +
+        ggplot2::ylim(c(0, 50))
     })
   })
 }

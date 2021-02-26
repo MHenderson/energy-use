@@ -25,11 +25,14 @@ mod_total_cost_plot_server <- function(id, tidy_energy, fuel_){
         dplyr::filter(fuel == fuel_, var == "total") %>%
         dplyr::mutate(GBP = round(value/100, 2)) %>%
         ggplot2::ggplot(ggplot2::aes(x = date, y = GBP, colour = supplier)) +
+        ggplot2::geom_area(ggplot2::aes(fill = supplier)) +
         ggplot2::geom_line() +
         ggplot2::scale_colour_brewer(palette = "Set1") +
+        ggplot2::scale_fill_brewer(palette = "Set1") +
         ggplot2::theme_minimal() +
         ggplot2::theme(legend.position = "none") +
-        ggplot2::labs(x = "", y = "GBP")
+        ggplot2::labs(x = "", y = "GBP") +
+        ggplot2::ylim(c(0, 600))
     })
   })
 }
