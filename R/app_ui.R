@@ -23,16 +23,6 @@ app_ui <- function(request) {
             column(width = 6,
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_usage_yesterday_text_ui("usage_yesterday_text_ui_electricity"),
-                  width = 2, title = "Usage (yesterday)"
-                ),
-                shinydashboardPlus::box(
-                  mod_cost_yesterday_text_ui("cost_yesterday_text_ui_electricity"),
-                  width = 2, title = "Cost (yesterday)"
-                )
-              ),
-              fluidRow(
-                shinydashboardPlus::box(
                   mod_usage_plot_ui("usage_plot_ui_electricity"),
                   width = 12, title = "Usage"
                 )
@@ -57,16 +47,6 @@ app_ui <- function(request) {
               )
             ),
             column(width = 6,
-              fluidRow(
-                shinydashboardPlus::box(
-                  mod_usage_yesterday_text_ui("usage_yesterday_text_ui_gas"),
-                  width = 2, title = "Usage (yesterday)"
-                ),
-                shinydashboardPlus::box(
-                  mod_cost_yesterday_text_ui("cost_yesterday_text_ui_gas"),
-                  width = 2, title = "Cost (yesterday)"
-                )
-              ),
               fluidRow(
                 shinydashboardPlus::box(
                   mod_usage_plot_ui("usage_plot_ui_gas"),
