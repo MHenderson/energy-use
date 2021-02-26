@@ -10,7 +10,7 @@
 mod_bills_plot_ui <- function(id){
   ns <- NS(id)
   tagList(
-    plotOutput(ns("bills_plot"))
+    plotly::plotlyOutput(ns("bills_plot"))
   )
 }
 
@@ -20,13 +20,15 @@ mod_bills_plot_ui <- function(id){
 mod_bills_plot_server <- function(id, billing, fuel_){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    output$bills_plot <- renderPlot({
+    output$bills_plot <- plotly::renderPlotly({
       billing %>%
         dplyr::filter(fuel == fuel_) %>%
-        ggplot2::ggplot(ggplot2::aes(x = ymd, y = value)) +
+        ggplot2::ggplot(ggplot2::aes(x = ymd, y = value/100)) +
         ggplot2::geom_line(alpha = .5) +
-        ggplot2::geom_point()
-
+        ggplot2::geom_point() +
+        ggplot2::geom_smooth() +
+        ggplot2::theme_minimal() +
+        ggplot2::labs(x = "", y = "GBP")
     })
   })
 }

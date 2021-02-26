@@ -10,7 +10,7 @@
 mod_total_cost_plot_ui <- function(id){
   ns <- NS(id)
   tagList(
-    plotOutput(ns("total_cost_plot"))
+    plotly::plotlyOutput(ns("total_cost_plot"))
   )
 }
 
@@ -20,11 +20,16 @@ mod_total_cost_plot_ui <- function(id){
 mod_total_cost_plot_server <- function(id, tidy_energy, fuel_){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    output$total_cost_plot <- renderPlot({
+    output$total_cost_plot <- plotly::renderPlotly({
       tidy_energy %>%
         dplyr::filter(fuel == fuel_, var == "total") %>%
-        ggplot2::ggplot(ggplot2::aes(x = date, y = value, colour = supplier)) +
-        ggplot2::geom_line()
+        dplyr::mutate(GBP = round(value/100, 2)) %>%
+        ggplot2::ggplot(ggplot2::aes(x = date, y = GBP, colour = supplier)) +
+        ggplot2::geom_line() +
+        ggplot2::scale_colour_brewer(palette = "Set1") +
+        ggplot2::theme_minimal() +
+        ggplot2::theme(legend.position = "none") +
+        ggplot2::labs(x = "", y = "GBP")
     })
   })
 }

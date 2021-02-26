@@ -19,6 +19,7 @@ usethis::use_package( "dplyr" )
 usethis::use_package( "ggplot2" )
 usethis::use_package( "shinydashboard" )
 usethis::use_package( "shinydashboardPlus" )
+usethis::use_package( "plotly" )
 
 ## Add modules ----
 ## Create a module infrastructure in R/

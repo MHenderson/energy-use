@@ -10,7 +10,7 @@
 mod_annual_cost_plot_ui <- function(id){
   ns <- NS(id)
   tagList(
-    plotOutput(ns("annual_cost_plot"))
+    plotly::plotlyOutput(ns("annual_cost_plot"))
   )
 }
 
@@ -20,12 +20,14 @@ mod_annual_cost_plot_ui <- function(id){
 mod_annual_cost_plot_server <- function(id, annual_summary, fuel_){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    output$annual_cost_plot <- renderPlot({
+    output$annual_cost_plot <- plotly::renderPlotly({
       annual_summary %>%
         dplyr::filter(fuel == fuel_) %>%
-        ggplot2::ggplot(ggplot2::aes(x = year, y = value)) +
+        ggplot2::ggplot(ggplot2::aes(x = year, y = value/100)) +
         ggplot2::geom_line(alpha = .5) +
-        ggplot2::geom_point()
+        ggplot2::geom_point() +
+        ggplot2::theme_minimal() +
+        ggplot2::labs(x = "", y = "GBP")
     })
   })
 }

@@ -10,7 +10,7 @@
 mod_usage_plot_ui <- function(id){
   ns <- NS(id)
   tagList(
-    plotOutput(ns("usage_plot"))
+    plotly::plotlyOutput(ns("usage_plot"))
   )
 }
 
@@ -20,11 +20,16 @@ mod_usage_plot_ui <- function(id){
 mod_usage_plot_server <- function(id, tidy_energy, fuel_){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    output$usage_plot <- renderPlot({
+    output$usage_plot <- plotly::renderPlotly({
       tidy_energy %>%
         dplyr::filter(fuel == fuel_, var == "kwh") %>%
         ggplot2::ggplot(ggplot2::aes(x = date, y = value, colour = supplier)) +
-        ggplot2::geom_point()
+        ggplot2::geom_point() +
+        ggplot2::geom_smooth() +
+        ggplot2::scale_colour_brewer(palette = "Set1") +
+        ggplot2::theme_minimal() +
+        ggplot2::theme(legend.position = "none") +
+        ggplot2::labs(x = "", y = "kWh")
     })
   })
 }
