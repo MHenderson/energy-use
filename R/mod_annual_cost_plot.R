@@ -28,10 +28,9 @@ mod_annual_cost_plot_server <- function(id, annual_summary){
       )
     output$annual_cost_plot <- plotly::renderPlotly({
      X %>%
-        ggplot2::ggplot(ggplot2::aes(x = ymd, y = GBP)) +
-        ggplot2::geom_line(alpha = .5) +
-        ggplot2::geom_point() +
-        ggplot2::geom_text(ggplot2::aes(label = GBP_s), nudge_y = 20) +
+        ggplot2::ggplot(ggplot2::aes(x = year, y = GBP)) +
+        ggplot2::geom_bar(stat = "identity", width = 1) +
+        ggplot2::geom_text(ggplot2::aes(label = GBP_s), nudge_y = 30) +
         ggplot2::theme_minimal() +
         ggplot2::labs(x = "", y = "GBP") +
         ggplot2::ylim(c(0, 400)) +
