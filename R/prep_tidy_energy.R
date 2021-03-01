@@ -6,7 +6,6 @@ prep_tidy_energy <- function(energy) {
     simputation::impute_lm(electricity ~ date) %>%
     dplyr::arrange(date) %>%
     dplyr::rename(gas_kwh = gas, electricity_kwh = electricity) %>%
-    dplyr::select(-gas_reading_time, -electricity_reading_time) %>%
     dplyr::mutate(
       gas_cost = gas_kwh * gas_rate + gas_standing,
       electricity_cost = electricity_kwh * electricity_rate + electricity_standing
