@@ -28,11 +28,11 @@ mod_bills_plot_server <- function(id, billing){
     output$bills_plot <- plotly::renderPlotly({
       X %>%
         ggplot2::ggplot(ggplot2::aes(x = ymd, y = GBP)) +
-        ggplot2::geom_line(alpha = .5) +
-        ggplot2::geom_text(data = X %>% dplyr::filter(dplyr::row_number() %% 3 == 1), ggplot2::aes(label = GBP_s), nudge_y = 3) +
-        ggplot2::geom_point() +
-        ggplot2::geom_smooth() +
+        ggplot2::geom_bar(ggplot2::aes(fill = supplier), stat = "identity", width = 5) +
+        ggplot2::geom_text(data = X %>% dplyr::filter(dplyr::row_number() %% 3 == 1), ggplot2::aes(label = GBP_s), nudge_y = 5) +
+        ggplot2::scale_fill_brewer(palette = "Set1") +
         ggplot2::theme_minimal() +
+        ggplot2::theme(legend.position = "none") +
         ggplot2::labs(x = "", y = "GBP") +
         ggplot2::ylim(c(0, 50)) +
         ggplot2::facet_wrap(~ fuel, ncol = 1, scales = "free_y")
