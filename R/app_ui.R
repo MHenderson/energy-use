@@ -30,7 +30,7 @@ app_ui <- function(request) {
               fluidRow(
                 shinydashboardPlus::box(
                   mod_total_cost_plot_ui("total_cost_plot_ui"),
-                  width = 12, title = "Total cost"
+                  width = 12, title = "Total Cost"
                 )
               ),
               fluidRow(
@@ -42,7 +42,13 @@ app_ui <- function(request) {
               fluidRow(
                 shinydashboardPlus::box(
                   mod_annual_cost_plot_ui("annual_cost_plot_ui"),
-                  width = 12, title = "Annual cost"
+                  width = 12, title = "Annual Cost"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_readings_plot_ui("readings_plot_ui_1"),
+                  width = 12, title = "Meter Readings"
                 )
               )
             )

@@ -18,7 +18,8 @@ app_server <- function( input, output, session ) {
     dplyr::filter(var == "cost") %>%
     dplyr::group_by(fuel, year, month) %>%
     dplyr::summarise(
-      value = sum(value)
+      value = sum(value),
+      supplier = dplyr::first(supplier)
     ) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(ymd = lubridate::ymd(paste(year, month, 1, sep = "-")))
@@ -32,11 +33,13 @@ app_server <- function( input, output, session ) {
     dplyr::ungroup() %>%
     dplyr::mutate(ymd = lubridate::ymd(paste(year, 12, 31, sep = "-")))
 
+  readings <- readxl::read_xlsx("energy.xlsx", sheet = "readings")
 
   # List the first level callModules here
   mod_annual_cost_plot_server("annual_cost_plot_ui", annual_summary)
   mod_bills_plot_server("bills_plot_ui", billing)
   mod_usage_plot_server("usage_plot_ui", tidy_energy)
   mod_total_cost_plot_server("total_cost_plot_ui", tidy_energy)
+  mod_readings_plot_server("readings_plot_ui_1", readings)
 
 }
