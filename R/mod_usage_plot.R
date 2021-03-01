@@ -25,7 +25,6 @@ mod_usage_plot_server <- function(id, tidy_energy){
         dplyr::filter(var == "kwh") %>%
         ggplot2::ggplot(ggplot2::aes(x = date, y = value, colour = supplier)) +
         ggplot2::geom_point() +
-        ggplot2::geom_smooth(ggplot2::aes(x = date, y = value, colour = "blue")) +
         ggplot2::scale_colour_brewer(palette = "Set1") +
         ggplot2::theme_minimal() +
         ggplot2::theme(legend.position = "none") +
