@@ -17,11 +17,10 @@ mod_annual_cost_plot_ui <- function(id){
 #' annual_cost_plot Server Functions
 #'
 #' @noRd
-mod_annual_cost_plot_server <- function(id, annual_summary, fuel_){
+mod_annual_cost_plot_server <- function(id, annual_summary){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     X <- annual_summary %>%
-      dplyr::filter(fuel == fuel_) %>%
       dplyr::mutate(GBP = round(value/100, 2)) %>%
       dplyr::mutate(
         GBP = round(value/100, 2),
@@ -35,7 +34,8 @@ mod_annual_cost_plot_server <- function(id, annual_summary, fuel_){
         ggplot2::geom_text(ggplot2::aes(label = GBP_s), nudge_y = 20) +
         ggplot2::theme_minimal() +
         ggplot2::labs(x = "", y = "GBP") +
-        ggplot2::ylim(c(0, 400))
+        ggplot2::ylim(c(0, 400)) +
+        ggplot2::facet_wrap(~ fuel, ncol = 1, scales = "free_y")
     })
   })
 }

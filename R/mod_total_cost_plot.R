@@ -17,12 +17,12 @@ mod_total_cost_plot_ui <- function(id){
 #' total_cost_plot Server Functions
 #'
 #' @noRd
-mod_total_cost_plot_server <- function(id, tidy_energy, fuel_){
+mod_total_cost_plot_server <- function(id, tidy_energy){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     output$total_cost_plot <- plotly::renderPlotly({
       tidy_energy %>%
-        dplyr::filter(fuel == fuel_, var == "total") %>%
+        dplyr::filter(var == "total") %>%
         dplyr::mutate(GBP = round(value/100, 2)) %>%
         ggplot2::ggplot(ggplot2::aes(x = date, y = GBP, colour = supplier)) +
         ggplot2::geom_area(ggplot2::aes(fill = supplier)) +
@@ -32,7 +32,8 @@ mod_total_cost_plot_server <- function(id, tidy_energy, fuel_){
         ggplot2::theme_minimal() +
         ggplot2::theme(legend.position = "none") +
         ggplot2::labs(x = "", y = "GBP") +
-        ggplot2::ylim(c(0, 600))
+        ggplot2::ylim(c(0, 600)) +
+        ggplot2::facet_wrap(~ fuel, ncol = 1, scales = "free_y")
     })
   })
 }

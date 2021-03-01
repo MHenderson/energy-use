@@ -17,11 +17,10 @@ mod_bills_plot_ui <- function(id){
 #' bills_plot Server Functions
 #'
 #' @noRd
-mod_bills_plot_server <- function(id, billing, fuel_){
+mod_bills_plot_server <- function(id, billing){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     X <- billing %>%
-      dplyr::filter(fuel == fuel_) %>%
       dplyr::mutate(
         GBP = round(value/100, 2),
         GBP_s = sprintf("£%.2f", GBP)
@@ -35,7 +34,8 @@ mod_bills_plot_server <- function(id, billing, fuel_){
         ggplot2::geom_smooth() +
         ggplot2::theme_minimal() +
         ggplot2::labs(x = "", y = "GBP") +
-        ggplot2::ylim(c(0, 50))
+        ggplot2::ylim(c(0, 50)) +
+        ggplot2::facet_wrap(~ fuel, ncol = 1, scales = "free_y")
     })
   })
 }

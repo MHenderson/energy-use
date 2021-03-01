@@ -34,17 +34,9 @@ app_server <- function( input, output, session ) {
 
 
   # List the first level callModules here
-  mod_annual_cost_plot_server("annual_cost_plot_ui_gas", annual_summary, "gas")
-  mod_cost_yesterday_text_server("cost_yesterday_text_ui_gas", tidy_energy, "gas")
-  mod_bills_plot_server("bills_plot_ui_gas", billing, "gas")
-  mod_usage_plot_server("usage_plot_ui_gas", tidy_energy, "gas")
-  mod_usage_yesterday_text_server("usage_yesterday_text_ui_gas", tidy_energy, "gas")
-  mod_total_cost_plot_server("total_cost_plot_ui_gas", tidy_energy, "gas")
+  mod_annual_cost_plot_server("annual_cost_plot_ui", annual_summary)
+  mod_bills_plot_server("bills_plot_ui", billing)
+  mod_usage_plot_server("usage_plot_ui", tidy_energy)
+  mod_total_cost_plot_server("total_cost_plot_ui", tidy_energy)
 
-  mod_annual_cost_plot_server("annual_cost_plot_ui_electricity", annual_summary, "electricity")
-  mod_cost_yesterday_text_server("cost_yesterday_text_ui_electricity", tidy_energy, "electricity")
-  mod_bills_plot_server("bills_plot_ui_electricity", billing, "electricity")
-  mod_usage_plot_server("usage_plot_ui_electricity", tidy_energy, "electricity")
-  mod_usage_yesterday_text_server("usage_yesterday_text_ui_electricity", tidy_energy, "electricity")
-  mod_total_cost_plot_server("total_cost_plot_ui_electricity", tidy_energy, "electricity")
 }

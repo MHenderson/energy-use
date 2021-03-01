@@ -17,19 +17,20 @@ mod_usage_plot_ui <- function(id){
 #' usage_plot Server Functions
 #'
 #' @noRd
-mod_usage_plot_server <- function(id, tidy_energy, fuel_){
+mod_usage_plot_server <- function(id, tidy_energy){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     output$usage_plot <- plotly::renderPlotly({
       tidy_energy %>%
-        dplyr::filter(fuel == fuel_, var == "kwh") %>%
+        dplyr::filter(var == "kwh") %>%
         ggplot2::ggplot(ggplot2::aes(x = date, y = value, colour = supplier)) +
         ggplot2::geom_point() +
         ggplot2::geom_smooth(ggplot2::aes(x = date, y = value, colour = "blue")) +
         ggplot2::scale_colour_brewer(palette = "Set1") +
         ggplot2::theme_minimal() +
         ggplot2::theme(legend.position = "none") +
-        ggplot2::labs(x = "", y = "kWh")
+        ggplot2::labs(x = "", y = "kWh") +
+        ggplot2::facet_wrap(~ fuel, ncol = 1, scales = "free_y")
     })
   })
 }

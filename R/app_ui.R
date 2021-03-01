@@ -20,60 +20,33 @@ app_ui <- function(request) {
         ),
         body = shinydashboard::dashboardBody(
           fluidRow(
-            column(width = 6,
+            column(width = 12,
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_usage_plot_ui("usage_plot_ui_electricity"),
+                  mod_usage_plot_ui("usage_plot_ui"),
                   width = 12, title = "Usage"
                 )
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_total_cost_plot_ui("total_cost_plot_ui_electricity"),
+                  mod_total_cost_plot_ui("total_cost_plot_ui"),
                   width = 12, title = "Total cost"
                 )
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_bills_plot_ui("bills_plot_ui_electricity"),
+                  mod_bills_plot_ui("bills_plot_ui"),
                   width = 12, title = "Bills"
                 )
               ),
               fluidRow(
                 shinydashboardPlus::box(
-                  mod_annual_cost_plot_ui("annual_cost_plot_ui_electricity"),
-                  width = 12, title = "Annual cost"
-                )
-              )
-            ),
-            column(width = 6,
-              fluidRow(
-                shinydashboardPlus::box(
-                  mod_usage_plot_ui("usage_plot_ui_gas"),
-                  width = 12, title = "Usage"
-                )
-              ),
-              fluidRow(
-                shinydashboardPlus::box(
-                  mod_total_cost_plot_ui("total_cost_plot_ui_gas"),
-                  width = 12, title = "Total cost"
-                )
-              ),
-              fluidRow(
-                shinydashboardPlus::box(
-                  mod_bills_plot_ui("bills_plot_ui_gas"),
-                  width = 12, title = "Bills"
-                )
-              ),
-              fluidRow(
-                shinydashboardPlus::box(
-                  mod_annual_cost_plot_ui("annual_cost_plot_ui_gas"),
+                  mod_annual_cost_plot_ui("annual_cost_plot_ui"),
                   width = 12, title = "Annual cost"
                 )
               )
             )
           )
-
         ),
         controlbar = shinydashboardPlus::dashboardControlbar(),
         title = "My Energy Use"
