@@ -25,7 +25,7 @@ mod_total_cost_plot_server <- function(id, tidy_energy){
         dplyr::filter(var == "total") %>%
         dplyr::mutate(GBP = round(value/100, 2)) %>%
         ggplot2::ggplot(ggplot2::aes(x = date, y = GBP, colour = supplier)) +
-        ggplot2::geom_area(ggplot2::aes(fill = supplier)) +
+        ggplot2::geom_area(ggplot2::aes(fill = supplier), alpha = .5) +
         ggplot2::geom_line() +
         ggplot2::scale_colour_brewer(palette = "Set1") +
         ggplot2::scale_fill_brewer(palette = "Set1") +
