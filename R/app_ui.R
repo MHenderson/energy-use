@@ -15,40 +15,63 @@ app_ui <- function(request) {
         options = list(sidebarExpandOnHover = TRUE),
         header = shinydashboardPlus::dashboardHeader(),
         sidebar = shinydashboardPlus::dashboardSidebar(
+          shinydashboard::sidebarMenu(
+            shinydashboard::menuItem(
+              "Readings",
+              tabName = "readings",
+              icon = icon("dashboard")
+            ),
+            shinydashboard::menuItem(
+              "Bills",
+              icon = icon("gbp"),
+              tabName = "widgets",
+              badgeColor = "green"
+            )
+          ),
           minified = TRUE,
           collapsed = TRUE
         ),
         body = shinydashboard::dashboardBody(
-          fluidRow(
-            column(width = 12,
+          shinydashboard::tabItems(
+            shinydashboard::tabItem(tabName = "readings",
               fluidRow(
-                shinydashboardPlus::box(
-                  mod_usage_plot_ui("usage_plot_ui"),
-                  width = 12, title = "Usage"
+                column(width = 12,
+                  fluidRow(
+                    shinydashboardPlus::box(
+                      mod_usage_plot_ui("usage_plot_ui"),
+                      width = 12, title = "Usage"
+                    )
+                  ),
+                  fluidRow(
+                    shinydashboardPlus::box(
+                      mod_readings_plot_ui("readings_plot_ui_1"),
+                      width = 12, title = "Meter Readings"
+                    )
+                  )
                 )
-              ),
+              )
+            ),
+            shinydashboard::tabItem(tabName = "widgets",
               fluidRow(
-                shinydashboardPlus::box(
-                  mod_total_cost_plot_ui("total_cost_plot_ui"),
-                  width = 12, title = "Total Cost"
-                )
-              ),
-              fluidRow(
-                shinydashboardPlus::box(
-                  mod_bills_plot_ui("bills_plot_ui"),
-                  width = 12, title = "Bills"
-                )
-              ),
-              fluidRow(
-                shinydashboardPlus::box(
-                  mod_annual_cost_plot_ui("annual_cost_plot_ui"),
-                  width = 12, title = "Annual Cost"
-                )
-              ),
-              fluidRow(
-                shinydashboardPlus::box(
-                  mod_readings_plot_ui("readings_plot_ui_1"),
-                  width = 12, title = "Meter Readings"
+                column(width = 12,
+                  fluidRow(
+                    shinydashboardPlus::box(
+                      mod_total_cost_plot_ui("total_cost_plot_ui"),
+                      width = 12, title = "Total Cost"
+                    )
+                  ),
+                  fluidRow(
+                    shinydashboardPlus::box(
+                      mod_bills_plot_ui("bills_plot_ui"),
+                      width = 12, title = "Bills"
+                    )
+                  ),
+                  fluidRow(
+                    shinydashboardPlus::box(
+                      mod_annual_cost_plot_ui("annual_cost_plot_ui"),
+                      width = 12, title = "Annual Cost"
+                    )
+                  ),
                 )
               )
             )
