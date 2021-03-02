@@ -17,25 +17,25 @@ mod_bills_plot_ui <- function(id){
 #' bills_plot Server Functions
 #'
 #' @noRd
-mod_bills_plot_server <- function(id, billing){
+mod_bills_plot_server <- function(id, bills){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    X <- billing %>%
+
+    X <- bills %>%
+      dplyr::filter(bill_id != 4, fuel == "gas", date > "2019-07-01") %>%
       dplyr::mutate(
-        GBP = round(value/100, 2),
-        GBP_s = sprintf("£%.2f", GBP)
+        actual_bill_s = sprintf("£%.2f", actual_bill)
       )
+
     output$bills_plot <- plotly::renderPlotly({
       X %>%
-        ggplot2::ggplot(ggplot2::aes(x = ymd, y = GBP)) +
-        ggplot2::geom_bar(ggplot2::aes(fill = supplier), stat = "identity", width = 5) +
-        ggplot2::geom_text(data = X %>% dplyr::filter(dplyr::row_number() %% 3 == 1), ggplot2::aes(label = GBP_s), nudge_y = 5) +
+        ggplot2::ggplot(ggplot2::aes(date, actual_bill)) +
+        ggplot2::geom_col(ggplot2::aes(fill = supplier)) +
+        ggplot2::geom_text(ggplot2::aes(label = actual_bill_s), nudge_y = 5) +
         ggplot2::scale_fill_brewer(palette = "Set1") +
         ggplot2::theme_minimal() +
         ggplot2::theme(legend.position = "none") +
-        ggplot2::labs(x = "", y = "GBP") +
-        ggplot2::ylim(c(0, 50)) +
-        ggplot2::facet_wrap(~ fuel, ncol = 1, scales = "free_y")
+        ggplot2::labs(x = "", y = "GBP")
     })
   })
 }
