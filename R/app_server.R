@@ -6,18 +6,8 @@
 #' @noRd
 app_server <- function( input, output, session ) {
 
-  energy_2019 <- readxl::read_xlsx("energy.xlsx", sheet = "2019")
-  energy_2020 <- readxl::read_xlsx("energy.xlsx", sheet = "2020")
-  energy_2021 <- readxl::read_xlsx("energy.xlsx", sheet = "2021")
-
-  energy <- dplyr::bind_rows(energy_2019, energy_2020, energy_2021)
-
-  tidy_energy <- prep_tidy_energy(energy)
-
   mod_usage_plot_server("usage_plot_ui", tidy_energy)
   mod_total_cost_plot_server("total_cost_plot_ui", tidy_energy)
-
-  bills <- readxl::read_xlsx("energy.xlsx", sheet = "bills")
 
   mod_bills_plot_server("bills_plot_ui", bills)
 
@@ -31,8 +21,6 @@ app_server <- function( input, output, session ) {
     dplyr::mutate(ymd = lubridate::ymd(paste(year, 12, 31, sep = "-")))
 
   mod_annual_cost_plot_server("annual_cost_plot_ui", annual_summary)
-
-  readings <- readxl::read_xlsx("energy.xlsx", sheet = "readings")
 
   mod_readings_plot_server("readings_plot_ui_1", readings)
 
