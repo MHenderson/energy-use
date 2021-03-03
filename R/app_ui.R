@@ -39,13 +39,13 @@ app_ui <- function(request) {
                   fluidRow(
                     shinydashboardPlus::box(
                       mod_usage_plot_ui("usage_plot_ui"),
-                      width = 12, title = "Usage"
+                      width = 12, title = "Smart Meter"
                     )
                   ),
                   fluidRow(
                     shinydashboardPlus::box(
                       mod_readings_plot_ui("readings_plot_ui_1"),
-                      width = 12, title = "Meter Readings"
+                      width = 12, title = "Mains Meter"
                     )
                   )
                 )
