@@ -1,0 +1,36 @@
+Package: energyuse
+Title: My Energy Usage
+Version: 0.0.0.9000
+Authors@R: person('Matthew', 'Henderson', email = 'matthew.james.henderson@gmail.com', role = c('cre', 'aut'))
+Description: My energy usage dashboard.
+License: MIT + file LICENSE
+Imports: 
+    config,
+    golem,
+    shiny,
+    processx,
+    attempt,
+    DT,
+    glue,
+    htmltools,
+    dplyr,
+    magrittr,
+    ggplot2,
+    shinydashboard,
+    shinydashboardPlus,
+    plotly,
+    pkgload,
+    googlesheets4,
+    simputation,
+    readxl,
+    lubridate
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+URL: https://github.com/MHenderson/energy-use
+BugReports: https://github.com/MHenderson/energy-use/issues
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)

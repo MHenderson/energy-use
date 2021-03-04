@@ -1,0 +1,8 @@
+.RData
+.Rhistory
+manifest.json
+rsconnect/
+Rproj.user
+renv
+renv.lock
+.Rprofile
