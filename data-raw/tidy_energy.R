@@ -1,5 +1,9 @@
 ## code to prepare `energy` dataset goes here
 
+library(dplyr)
+
+source("R/prep_tidy_energy.R")
+
 googlesheets4::gs4_deauth()
 
 # should be a secret?
