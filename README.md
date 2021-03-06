@@ -26,3 +26,13 @@ library(energyusage)
 ## basic example code
 ```
 
+## Docker
+
+  $ docker build -t mhenderson/energy-use . 
+  $ docker run -p8080:80 mhenderson/energy-use:latest
+  $ docker run mhenderson/energy-use:latest data-raw/data_refresh.sh
+  $ docker login
+  $ docker push mjhenderson/energy-use
+
+
+
