@@ -1,4 +1,4 @@
 library(testthat)
-library(energyusage)
+library(energyuse)
 
-test_check("energyusage")
+test_check("energyuse")

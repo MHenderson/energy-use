@@ -1,5 +1,5 @@
 
-# energyusage
+# energyuse
 
 <!-- badges: start -->
 <!-- badges: start -->
@@ -7,14 +7,14 @@
   <!-- badges: end -->
 <!-- badges: end -->
 
-The goal of energyusage is to ...
+The goal of energyuse is to ...
 
 ## Installation
 
-You can install the released version of energyusage from [CRAN](https://CRAN.R-project.org) with:
+You can install the released version of energyuse from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("energyusage")
+install.packages("energyuse")
 ```
 
 ## Example
@@ -22,7 +22,7 @@ install.packages("energyusage")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(energyusage)
+library(energyuse)
 ## basic example code
 ```
 

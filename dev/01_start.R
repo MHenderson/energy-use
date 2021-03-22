@@ -14,13 +14,13 @@
 ## Fill the DESCRIPTION ----
 ## Add meta data about your application
 golem::fill_desc(
-  pkg_name = "energyusage", # The Name of the package containing the App
+  pkg_name = "energyuse", # The Name of the package containing the App
   pkg_title = "My Energy Usage", # The Title of the package containing the App
   pkg_description = "My energy usage dashboard.", # The Description of the package containing the App
   author_first_name = "Matthew", # Your First Name
   author_last_name = "Henderson", # Your Last Name
   author_email = "matthew.james.henderson@gmail.com", # Your Email
-  repo_url = "https://github.com/MHenderson/energyusage" # The URL of the GitHub Repo (optional)
+  repo_url = "https://github.com/MHenderson/energyuse" # The URL of the GitHub Repo (optional)
 )
 
 ## Set {golem} options ----
