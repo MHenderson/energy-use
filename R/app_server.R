@@ -30,4 +30,6 @@ app_server <- function( input, output, session ) {
   readings <- readRDS("readings.rds")
   mod_readings_plot_server("readings_plot_ui_1", readings)
 
+  mod_usage_trend_plot_server("usage_trend_plot_ui_1", tidy_energy)
+
 }
