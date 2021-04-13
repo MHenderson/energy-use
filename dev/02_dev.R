@@ -48,6 +48,8 @@ golem::add_module( name = "total_cost_plot" ) # Name of the module
 golem::add_module( name = "usage_plot" ) # Name of the module
 golem::add_module( name = "readings_plot" ) # Name of the module
 golem::add_module( name = "usage_trend_plot" ) # Name of the module
+golem::add_module( name = "var_select" ) # Name of the module
+golem::add_module( name = "cum_usage_plot" ) # Name of the module
 
 ## Add helper functions ----
 ## Creates ftc_* and utils_*
