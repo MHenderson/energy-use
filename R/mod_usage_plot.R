@@ -17,12 +17,12 @@ mod_usage_plot_ui <- function(id){
 #' usage_plot Server Functions
 #'
 #' @noRd
-mod_usage_plot_server <- function(id, tidy_energy){
+mod_usage_plot_server <- function(id, tidy_energy, plot1vars){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     output$usage_plot <- dygraphs::renderDygraph({
       q <- tidy_energy %>%
-        dplyr::filter(var == "kwh") %>%
+        dplyr::filter(var == plot1vars$var()) %>%
         dplyr::select(fuel, date, value) %>%
         tidyr::pivot_wider(names_from = fuel, values_from = value)
 

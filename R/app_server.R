@@ -6,9 +6,11 @@
 #' @noRd
 app_server <- function( input, output, session ) {
 
+  plot1vars <- callModule(mod_var_select_server, "plot1_vars")
+
   download.file("https://mjh-energy-data.netlify.app/data/tidy_energy.rds", destfile = "tidy_energy.rds")
   tidy_energy <- readRDS("tidy_energy.rds")
-  mod_usage_plot_server("usage_plot_ui", tidy_energy)
+  mod_usage_plot_server("usage_plot_ui", tidy_energy, plot1vars)
   mod_total_cost_plot_server("total_cost_plot_ui", tidy_energy)
 
   download.file("https://mjh-energy-data.netlify.app/data/bills.rds", destfile = "bills.rds")
@@ -30,6 +32,8 @@ app_server <- function( input, output, session ) {
   readings <- readRDS("readings.rds")
   mod_readings_plot_server("readings_plot_ui_1", readings)
 
-  mod_usage_trend_plot_server("usage_trend_plot_ui_1", tidy_energy)
+  mod_usage_trend_plot_server("usage_trend_plot_ui_1", tidy_energy, plot1vars)
+  mod_cum_usage_plot_server("cum_usage_plot_ui_1", tidy_energy, plot1vars)
+
 
 }

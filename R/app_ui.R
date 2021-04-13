@@ -26,10 +26,11 @@ app_ui <- function(request) {
               icon = icon("gbp"),
               tabName = "widgets",
               badgeColor = "green"
-            )
+            ),
+            mod_var_select_ui("plot1_vars")
           ),
           minified = TRUE,
-          collapsed = TRUE
+          collapsed = FALSE
         ),
         body = shinydashboard::dashboardBody(
           shinydashboard::tabItems(
@@ -39,19 +40,19 @@ app_ui <- function(request) {
                   fluidRow(
                     shinydashboardPlus::box(
                       mod_usage_plot_ui("usage_plot_ui"),
-                      width = 12, title = "Smart Meter Readings"
+                      width = 12, title = "Readings"
                     )
                   ),
                   fluidRow(
                     shinydashboardPlus::box(
                       mod_usage_trend_plot_ui("usage_trend_plot_ui_1"),
-                      width = 12, title = "Usage Trend"
+                      width = 12, title = "Trend"
                     )
                   ),
                   fluidRow(
                     shinydashboardPlus::box(
-                      mod_readings_plot_ui("readings_plot_ui_1"),
-                      width = 12, title = "Mains Meter Readings"
+                      mod_cum_usage_plot_ui("cum_usage_plot_ui_1"),
+                      width = 12, title = "Total"
                     )
                   )
                 )
