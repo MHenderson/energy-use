@@ -10,7 +10,7 @@
 mod_usage_trend_plot_ui <- function(id){
   ns <- NS(id)
   tagList(
-    dygraphs::dygraphOutput(ns("usage_trend_plot"))
+    shinycssloaders::withSpinner(dygraphs::dygraphOutput(ns("usage_trend_plot")))
   )
 }
 
@@ -31,7 +31,10 @@ mod_usage_trend_plot_server <- function(id, tidy_energy, plot1vars){
 
       dygraphs::dygraph(xq, group = "usage") %>%
         dygraphs::dyRoller(rollPeriod = 7) %>%
-        dygraphs::dyRangeSelector()
+        dygraphs::dyRangeSelector(dateWindow = c("2021-01-01", "2021-04-18")) %>%
+        dygraphs::dyLegend(width = 300, hideOnMouseOut = FALSE) %>%
+        dygraphs::dyAxis("y", label = plot1vars$var())
+
     })
   })
 }

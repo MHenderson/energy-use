@@ -6,6 +6,8 @@
 #' @noRd
 app_server <- function( input, output, session ) {
 
+  options(spinner.color="#0dc5c1")
+
   plot1vars <- callModule(mod_var_select_server, "plot1_vars")
 
   download.file("https://mjh-energy-data.netlify.app/data/tidy_energy.rds", destfile = "tidy_energy.rds")

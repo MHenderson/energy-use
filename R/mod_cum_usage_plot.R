@@ -10,7 +10,7 @@
 mod_cum_usage_plot_ui <- function(id){
   ns <- NS(id)
   tagList(
-    dygraphs::dygraphOutput(ns("cum_usage_plot"))
+    shinycssloaders::withSpinner(dygraphs::dygraphOutput(ns("cum_usage_plot")))
   )
 }
 
@@ -34,10 +34,13 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
     xq <- xts::xts(q[,-1], order.by = q[,1])
 
     dygraphs::dygraph(xq, group = "usage") %>%
-      dygraphs::dyRangeSelector() %>%
+      dygraphs::dyRangeSelector(dateWindow = c("2021-01-01", "2021-04-18")) %>%
       dygraphs::dyOptions(stepPlot = TRUE) %>%
       dygraphs::dySeries("gas", pointSize = 2, drawPoints = TRUE, strokeWidth = 0) %>%
-      dygraphs::dySeries("electricity", pointSize = 2, drawPoints = TRUE, strokeWidth = 0)
+      dygraphs::dySeries("electricity", pointSize = 2, drawPoints = TRUE, strokeWidth = 0) %>%
+      dygraphs::dyLegend(width = 400, hideOnMouseOut = FALSE) %>%
+      dygraphs::dyAxis("y", label = plot1vars$var())
+
   })
   })
 }
