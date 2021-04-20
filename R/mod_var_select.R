@@ -10,9 +10,17 @@
 mod_var_select_ui <- function(id){
   ns <- NS(id)
   tagList(
-    radioButtons(ns("var"), "Variable:",
-                 c("kWh" = "kwh",
-                   "GBP" = "cost"))
+    radioButtons(
+      inputId = ns("var"),
+        label = "Variable:",
+      choices = c("kWh" = "kwh", "GBP" = "cost")
+    ),
+    checkboxGroupInput(
+       inputId = ns("tariff"),
+         label = "Tariff",
+       choices = list(1, 2, 3, 4),
+      selected = 1
+    )
   )
 }
 
@@ -23,7 +31,8 @@ mod_var_select_server <- function(input, output, session){
   ns <- session$ns
   return(
     list(
-      var = reactive({ input$var })
+         var = reactive({ input$var }),
+      tariff = reactive({ input$tariff })
     )
   )
 

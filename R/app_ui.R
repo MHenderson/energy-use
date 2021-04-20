@@ -18,6 +18,7 @@ app_ui <- function(request) {
           shinydashboard::sidebarMenu(
             mod_var_select_ui("plot1_vars")
           ),
+          fluidRow(column(3, verbatimTextOutput("value"))),
           minified = TRUE,
           collapsed = FALSE
         ),
