@@ -16,25 +16,12 @@ app_ui <- function(request) {
         header = shinydashboardPlus::dashboardHeader(),
         sidebar = shinydashboardPlus::dashboardSidebar(
           shinydashboard::sidebarMenu(
-            shinydashboard::menuItem(
-              "Readings",
-              tabName = "readings",
-              icon = icon("dashboard")
-            ),
-            shinydashboard::menuItem(
-              "Bills",
-              icon = icon("gbp"),
-              tabName = "widgets",
-              badgeColor = "green"
-            ),
             mod_var_select_ui("plot1_vars")
           ),
           minified = TRUE,
           collapsed = FALSE
         ),
         body = shinydashboard::dashboardBody(
-          shinydashboard::tabItems(
-            shinydashboard::tabItem(tabName = "readings",
               fluidRow(
                 column(width = 12,
                   fluidRow(
@@ -57,32 +44,6 @@ app_ui <- function(request) {
                   )
                 )
               )
-            ),
-            shinydashboard::tabItem(tabName = "widgets",
-              fluidRow(
-                column(width = 12,
-                  fluidRow(
-                    shinydashboardPlus::box(
-                      mod_total_cost_plot_ui("total_cost_plot_ui"),
-                      width = 12, title = "Total Cost"
-                    )
-                  ),
-                  fluidRow(
-                    shinydashboardPlus::box(
-                      mod_bills_plot_ui("bills_plot_ui"),
-                      width = 12, title = "Bills"
-                    )
-                  ),
-                  fluidRow(
-                    shinydashboardPlus::box(
-                      mod_annual_cost_plot_ui("annual_cost_plot_ui"),
-                      width = 12, title = "Annual Cost"
-                    )
-                  ),
-                )
-              )
-            )
-          )
         ),
         controlbar = shinydashboardPlus::dashboardControlbar(),
         title = "My Energy Use"
