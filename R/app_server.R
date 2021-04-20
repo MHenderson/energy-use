@@ -8,15 +8,24 @@ app_server <- function( input, output, session ) {
 
   options(spinner.color="#0dc5c1")
 
-  # download data
-  download.file("https://mjh-energy-data.netlify.app/data/tidy_energy.rds", destfile = "tidy_energy.rds")
-  download.file("https://mjh-energy-data.netlify.app/data/bills.rds", destfile = "bills.rds")
-  download.file("https://mjh-energy-data.netlify.app/data/readings.rds", destfile = "readings.rds")
+  dev_mode <- TRUE
 
-  # load data
-  tidy_energy <- readRDS("tidy_energy.rds")
-  bills <- readRDS("bills.rds")
-  readings <- readRDS("readings.rds")
+  if(dev_mode) {
+    tidy_energy <- readRDS("/home/matthew/workspace/energy-data/data/tidy_energy.rds")
+    bills <- readRDS("/home/matthew/workspace/energy-data/data/bills.rds")
+    readings <- readRDS("/home/matthew/workspace/energy-data/data/readings.rds")
+  }
+  else {
+    # download data
+    download.file("https://mjh-energy-data.netlify.app/data/tidy_energy.rds", destfile = "tidy_energy.rds")
+    download.file("https://mjh-energy-data.netlify.app/data/bills.rds", destfile = "bills.rds")
+    download.file("https://mjh-energy-data.netlify.app/data/readings.rds", destfile = "readings.rds")
+
+    # load data
+    tidy_energy <- readRDS("tidy_energy.rds")
+    bills <- readRDS("bills.rds")
+    readings <- readRDS("readings.rds")
+  }
 
   # variable selection module
   plot1vars <- callModule(mod_var_select_server, "plot1_vars")
