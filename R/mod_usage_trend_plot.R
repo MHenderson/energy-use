@@ -21,10 +21,15 @@ mod_usage_trend_plot_server <- function(id, tidy_energy, plot1vars){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     output$usage_trend_plot <- dygraphs::renderDygraph({
+
       q <- tidy_energy %>%
-        dplyr::filter(var == plot1vars$var()) %>%
-        dplyr::select(fuel, date, value) %>%
-        tidyr::pivot_wider(names_from = fuel, values_from = value)
+        dplyr::filter(var == plot1vars$var(), tarrif_id %in% plot1vars$tariff()) %>%
+        dplyr::select(tarrif_id, fuel, date, value) %>%
+        dplyr::mutate(
+          id_fuel = paste0(fuel, "_", tarrif_id)
+        ) %>%
+        dplyr::select(id_fuel, date, value) %>%
+        tidyr::pivot_wider(names_from = id_fuel, values_from = value)
 
       q <- as.data.frame(q)
       xq <- xts::xts(q[,-1], order.by = q[,1])
