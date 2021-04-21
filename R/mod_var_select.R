@@ -21,6 +21,11 @@ mod_var_select_ui <- function(id){
        choices = list(1, 2, 3, 4),
       selected = 1
     ),
+    radioButtons(
+      inputId = ns("history"),
+      label = "Show history:",
+      choices = c(TRUE, FALSE)
+    ),
     checkboxGroupInput(
       inputId = ns("fuel"),
       label = "Fuel",
@@ -39,7 +44,8 @@ mod_var_select_server <- function(input, output, session){
     list(
          var = reactive({ input$var }),
       tariff = reactive({ input$tariff }),
-      fuel = reactive({ input$fuel })
+     history = reactive({ input$history }),
+        fuel = reactive({ input$fuel })
     )
   )
 
