@@ -25,7 +25,11 @@ mod_usage_plot_server <- function(id, tidy_energy, plot1vars){
     output$usage_plot <- dygraphs::renderDygraph({
 
       q <- tidy_energy %>%
-        dplyr::filter(var == plot1vars$var(), tarrif_id %in% plot1vars$tariff()) %>%
+        dplyr::filter(
+          var == plot1vars$var(),
+          tarrif_id %in% plot1vars$tariff(),
+          fuel %in% plot1vars$fuel()
+        ) %>%
         dplyr::select(tarrif_id, fuel, date, value) %>%
         dplyr::mutate(
           id_fuel = paste0(fuel, "_", tarrif_id)

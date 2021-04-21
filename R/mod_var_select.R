@@ -20,6 +20,12 @@ mod_var_select_ui <- function(id){
          label = "Tariff",
        choices = list(1, 2, 3, 4),
       selected = 1
+    ),
+    checkboxGroupInput(
+      inputId = ns("fuel"),
+      label = "Fuel",
+      choices = list("Gas" = "gas", "Electricity" = "electricity"),
+      selected = "gas"
     )
   )
 }
@@ -32,7 +38,8 @@ mod_var_select_server <- function(input, output, session){
   return(
     list(
          var = reactive({ input$var }),
-      tariff = reactive({ input$tariff })
+      tariff = reactive({ input$tariff }),
+      fuel = reactive({ input$fuel })
     )
   )
 
