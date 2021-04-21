@@ -25,12 +25,12 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
     q <- tidy_energy %>%
       dplyr::filter(
         var == plot1vars$var(),
-        tarrif_id %in% plot1vars$tariff(),
+        seq_id %in% c(plot1vars$tariff(), if(plot1vars$history()) c(5) else c()),
         fuel %in% plot1vars$fuel()
       ) %>%
-      dplyr::select(tarrif_id, fuel, date, value) %>%
+      dplyr::select(seq_id, fuel, date, value) %>%
       dplyr::mutate(
-        id_fuel = paste0(fuel, "_", tarrif_id)
+        id_fuel = paste0(fuel, "_", seq_id)
       ) %>%
       dplyr::select(id_fuel, date, value) %>%
       dplyr::group_by(id_fuel) %>%
