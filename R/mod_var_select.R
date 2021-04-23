@@ -18,7 +18,12 @@ mod_var_select_ui <- function(id){
     checkboxGroupInput(
        inputId = ns("tariff"),
          label = "Tariff",
-       choices = list(1, 2, 3, 4),
+       choices = list(
+           "SP: Scottish Power (Energy Exclusive)" = 1,
+         "YE: Yorkshire Energy (Green Ribblehead)" = 2,
+                     "TE: Tonik Energy (Go Green)" = 3,
+                   "GS: Green Star Energy (Green)" = 4
+      ),
       selected = 1
     ),
     radioButtons(

@@ -24,6 +24,15 @@ mod_usage_plot_server <- function(id, tidy_energy, plot1vars){
 
     output$usage_plot <- dygraphs::renderDygraph({
 
+      X <- tibble::tribble(
+        ~seq_id, ~code,
+        1, "SP",
+        2, "YE",
+        3, "TE",
+        4, "GS",
+        5, ""
+      )
+
       q <- tidy_energy %>%
         dplyr::filter(
           var == plot1vars$var(),
@@ -31,8 +40,10 @@ mod_usage_plot_server <- function(id, tidy_energy, plot1vars){
           fuel %in% plot1vars$fuel()
         ) %>%
         dplyr::select(seq_id, fuel, date, value) %>%
+        dplyr::left_join(X) %>%
         dplyr::mutate(
-          id_fuel = paste0(fuel, "_", seq_id)
+          fuel_code = substr(fuel, 1, 1),
+          id_fuel = paste0(code, "_", fuel_code)
         ) %>%
         dplyr::select(id_fuel, date, value) %>%
         tidyr::pivot_wider(names_from = id_fuel, values_from = value)
@@ -40,11 +51,22 @@ mod_usage_plot_server <- function(id, tidy_energy, plot1vars){
       q <- as.data.frame(q)
       xq <- xts::xts(q[,-1], order.by = q[,1])
 
-      dygraphs::dygraph(xq, group = "usage") %>%
-        dygraphs::dyRangeSelector(dateWindow = c("2021-01-01", "2021-04-18")) %>%
-        dygraphs::dyOptions(drawPoints = TRUE, strokeWidth = 0) %>%
-        dygraphs::dyLegend(width = 300, hideOnMouseOut = FALSE) %>%
-        dygraphs::dyAxis("y", label = plot1vars$var())
+      p <- dygraphs::dygraph(xq, group = "usage") %>%
+        dygraphs::dyRangeSelector(dateWindow = c("2021-01-01", as.character(Sys.Date()))) %>%
+        dygraphs::dyLegend(show = "follow") %>%
+        dygraphs::dyOptions(drawPoints = TRUE, pointSize = 2, strokeWidth = 0)
+
+      if("_g" %in% colnames(q)) {
+        p <- p %>%
+          dygraphs::dySeries("_g", color = "#BDBDBD", pointShape = "plus", pointSize = 5)
+      }
+
+      if("_e" %in% colnames(q)) {
+        p <- p %>%
+          dygraphs::dySeries("_e", color = "#636363", pointShape = "plus", pointSize = 5)
+      }
+
+      p
 
     })
   })

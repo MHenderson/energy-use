@@ -22,6 +22,15 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
   ns <- session$ns
   output$cum_usage_plot <- dygraphs::renderDygraph({
 
+    X <- tibble::tribble(
+      ~seq_id, ~code,
+      1, "SP",
+      2, "YE",
+      3, "TE",
+      4, "GS",
+      5, ""
+    )
+
     q <- tidy_energy %>%
       dplyr::filter(
         var == plot1vars$var(),
@@ -29,8 +38,10 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
         fuel %in% plot1vars$fuel()
       ) %>%
       dplyr::select(seq_id, fuel, date, value) %>%
+      dplyr::left_join(X) %>%
       dplyr::mutate(
-        id_fuel = paste0(fuel, "_", seq_id)
+        fuel_code = substr(fuel, 1, 1),
+        id_fuel = paste0(code, "_", fuel_code)
       ) %>%
       dplyr::select(id_fuel, date, value) %>%
       dplyr::group_by(id_fuel) %>%
@@ -42,11 +53,24 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
     q <- as.data.frame(q)
     xq <- xts::xts(q[,-1], order.by = q[,1])
 
-    dygraphs::dygraph(xq, group = "usage") %>%
-      dygraphs::dyRangeSelector(dateWindow = c("2021-01-01", "2021-04-18")) %>%
+    p <- dygraphs::dygraph(xq, group = "usage") %>%
+      dygraphs::dyRangeSelector(dateWindow = c("2021-01-01", as.character(Sys.Date()))) %>%
       dygraphs::dyOptions(stepPlot = TRUE) %>%
       dygraphs::dyLegend(width = 400, hideOnMouseOut = FALSE) %>%
       dygraphs::dyAxis("y", label = plot1vars$var())
+
+    if("_g" %in% colnames(q)) {
+      p <- p %>%
+        dygraphs::dySeries("_g", color = "#BDBDBD", strokePattern = "dashed")
+    }
+
+    if("_e" %in% colnames(q)) {
+      p <- p %>%
+        dygraphs::dySeries("_e", color = "#636363", strokePattern = "dashed")
+    }
+
+    p
+
 
   })
   })
