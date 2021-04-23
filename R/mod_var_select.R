@@ -13,29 +13,42 @@ mod_var_select_ui <- function(id){
     radioButtons(
       inputId = ns("var"),
         label = "Variable:",
-      choices = c("kWh" = "kwh", "GBP" = "cost")
+      choices = c("kWh" = "kwh", "GBP" = "cost"),
+      selected = "cost"
     ),
-    checkboxGroupInput(
-       inputId = ns("tariff"),
-         label = "Tariff",
-       choices = list(
-           "SP: Scottish Power (Energy Exclusive)" = 1,
-         "YE: Yorkshire Energy (Green Ribblehead)" = 2,
-                     "TE: Tonik Energy (Go Green)" = 3,
-                   "GS: Green Star Energy (Green)" = 4
+    shinyWidgets::pickerInput(
+      inputId = ns("tariff"),
+      label = "Tariff",
+      choices = list(
+        "SP: Scottish Power (Energy Exclusive)" = 1,
+        "YE: Yorkshire Energy (Green Ribblehead)" = 2,
+        "TE: Tonik Energy (Go Green)" = 3,
+        "GS: Green Star Energy (Green)" = 4
       ),
-      selected = 1
+      options = list(
+        `actions-box` = TRUE,
+        size = 10,
+        `selected-text-format` = "count > 3"
+      ),
+      multiple = TRUE,
+      selected = c()
+    ),
+    shinyWidgets::pickerInput(
+      inputId = ns("fuel"),
+      label = "Fuel",
+      choices = list("Gas" = "gas", "Electricity" = "electricity"),
+      options = list(
+        `actions-box` = TRUE,
+        size = 10,
+        `selected-text-format` = "count > 3"
+      ),
+      multiple = TRUE,
+      selected = c("gas", "electricity")
     ),
     radioButtons(
       inputId = ns("history"),
       label = "Show history:",
       choices = c(TRUE, FALSE)
-    ),
-    checkboxGroupInput(
-      inputId = ns("fuel"),
-      label = "Fuel",
-      choices = list("Gas" = "gas", "Electricity" = "electricity"),
-      selected = "gas"
     )
   )
 }
