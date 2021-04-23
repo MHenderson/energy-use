@@ -28,19 +28,19 @@ app_ui <- function(request) {
                   fluidRow(
                     shinydashboardPlus::box(
                       mod_usage_plot_ui("usage_plot_ui"),
-                      width = 12, title = "Readings"
+                      width = 10, title = "Readings"
                     )
                   ),
                   fluidRow(
                     shinydashboardPlus::box(
                       mod_usage_trend_plot_ui("usage_trend_plot_ui_1"),
-                      width = 12, title = "Trend"
+                      width = 10, title = "Trend"
                     )
                   ),
                   fluidRow(
                     shinydashboardPlus::box(
                       mod_cum_usage_plot_ui("cum_usage_plot_ui_1"),
-                      width = 12, title = "Total"
+                      width = 10, title = "Total"
                     )
                   )
                 )
