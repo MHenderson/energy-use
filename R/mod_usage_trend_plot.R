@@ -52,8 +52,10 @@ mod_usage_trend_plot_server <- function(id, tidy_energy, plot1vars){
       p <- dygraphs::dygraph(xq, group = "usage") %>%
         dygraphs::dyRoller(rollPeriod = 7) %>%
         dygraphs::dyRangeSelector(dateWindow = c("2021-01-01", as.character(Sys.Date()))) %>%
-        dygraphs::dyLegend(width = 300, hideOnMouseOut = FALSE) %>%
-        dygraphs::dyAxis("y", label = plot1vars$var())
+        dygraphs::dyLegend(show = "follow") %>%
+        dygraphs::dyAxis("y", label = plot1vars$var()) %>%
+        dygraphs::dyHighlight(highlightSeriesBackgroundAlpha = 0.2)
+
 
       if("_g" %in% colnames(q)) {
         p <- p %>%
