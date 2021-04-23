@@ -14,6 +14,7 @@ app_server <- function( input, output, session ) {
     tidy_energy <- readRDS("/home/matthew/workspace/energy-data/data/tidy_energy.rds")
     bills <- readRDS("/home/matthew/workspace/energy-data/data/bills.rds")
     readings <- readRDS("/home/matthew/workspace/energy-data/data/readings.rds")
+    tariffs <- readRDS("/home/matthew/workspace/energy-data/data/tariffs.rds")
   }
   else {
     # download data
