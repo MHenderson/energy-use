@@ -26,29 +26,41 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
   moduleServer( id, function(input, output, session){
   ns <- session$ns
 
+  id_fuel_cumsum <- reactive({
+    id_codes <- tibble::tribble(
+      ~seq_id, ~code,
+      1, "SP",
+      2, "YE",
+      3, "TE",
+      4, "GS",
+      5, ""
+    )
+    tidy_energy %>%
+      dplyr::filter(
+        var == plot1vars$var(),
+        seq_id %in% c(plot1vars$tariff(), if(plot1vars$history()) c(5) else c()),
+        fuel %in% plot1vars$fuel()
+      ) %>%
+      dplyr::select(seq_id, fuel, date, value) %>%
+      dplyr::left_join(id_codes, by = "seq_id") %>%
+      dplyr::mutate(
+        fuel_code = substr(fuel, 1, 1),
+        id_fuel = paste0(code, "_", fuel_code)
+      ) %>%
+      dplyr::select(id_fuel, date, value) %>%
+      dplyr::group_by(id_fuel) %>%
+      dplyr::mutate(
+        value = cumsum(value)
+      )
+  })
+
   output$cum_usage_info <- renderUI({
 
     gas_total <- reactive({
-      tidy_energy %>%
+      id_fuel_cumsum() %>%
         dplyr::filter(
-          var == plot1vars$var(),
-          seq_id %in% c(plot1vars$tariff(), if(plot1vars$history()) c(5) else c()),
-          fuel %in% plot1vars$fuel()
-        ) %>%
-        dplyr::filter(
-          date >= input$cum_usage_plot_date_window[1],
-          date <= input$cum_usage_plot_date_window[2]
-        ) %>%
-        dplyr::select(seq_id, fuel, date, value) %>%
-        dplyr::left_join(X, by = "seq_id") %>%
-        dplyr::mutate(
-          fuel_code = substr(fuel, 1, 1),
-          id_fuel = paste0(code, "_", fuel_code)
-        ) %>%
-        dplyr::select(id_fuel, date, value) %>%
-        dplyr::group_by(id_fuel) %>%
-        dplyr::mutate(
-          value = cumsum(value)
+          date >= req(input$cum_usage_plot_date_window[1]),
+          date <= req(input$cum_usage_plot_date_window[2])
         ) %>%
         dplyr::filter(value == max(value)) %>%
         dplyr::filter(id_fuel == "_g") %>%
@@ -57,26 +69,10 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
     })
 
     electricity_total <- reactive({
-      tidy_energy %>%
+      id_fuel_cumsum() %>%
         dplyr::filter(
-          var == plot1vars$var(),
-          seq_id %in% c(plot1vars$tariff(), if(plot1vars$history()) c(5) else c()),
-          fuel %in% plot1vars$fuel()
-        ) %>%
-        dplyr::filter(
-          date >= input$cum_usage_plot_date_window[1],
-          date <= input$cum_usage_plot_date_window[2]
-        ) %>%
-        dplyr::select(seq_id, fuel, date, value) %>%
-        dplyr::left_join(X, by = "seq_id") %>%
-        dplyr::mutate(
-          fuel_code = substr(fuel, 1, 1),
-          id_fuel = paste0(code, "_", fuel_code)
-        ) %>%
-        dplyr::select(id_fuel, date, value) %>%
-        dplyr::group_by(id_fuel) %>%
-        dplyr::mutate(
-          value = cumsum(value)
+          date >= req(input$cum_usage_plot_date_window[1]),
+          date <= req(input$cum_usage_plot_date_window[2])
         ) %>%
         dplyr::filter(value == max(value)) %>%
         dplyr::filter(id_fuel == "_e") %>%
@@ -110,33 +106,7 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
 
   output$cum_usage_plot <- dygraphs::renderDygraph({
 
-    X <- tibble::tribble(
-      ~seq_id, ~code,
-      1, "SP",
-      2, "YE",
-      3, "TE",
-      4, "GS",
-      5, ""
-    )
-
-    q <- tidy_energy %>%
-      dplyr::filter(
-        var == plot1vars$var(),
-        seq_id %in% c(plot1vars$tariff(), if(plot1vars$history()) c(5) else c()),
-        fuel %in% plot1vars$fuel()
-      ) %>%
-      dplyr::select(seq_id, fuel, date, value) %>%
-      dplyr::left_join(X, by = "seq_id") %>%
-      dplyr::mutate(
-        fuel_code = substr(fuel, 1, 1),
-        id_fuel = paste0(code, "_", fuel_code)
-      ) %>%
-      dplyr::select(id_fuel, date, value) %>%
-      dplyr::group_by(id_fuel) %>%
-      dplyr::mutate(
-        value = cumsum(value)
-      ) %>%
-      tidyr::pivot_wider(names_from = id_fuel, values_from = value)
+    q <- tidyr::pivot_wider(id_fuel_cumsum(), names_from = id_fuel, values_from = value)
 
     if(nrow(q) == 0) return()
 
@@ -161,7 +131,6 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
     }
 
     p
-
 
   })
   })
