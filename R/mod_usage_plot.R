@@ -48,8 +48,8 @@ mod_usage_plot_server <- function(id, tidy_energy, plot1vars){
         dplyr::select(id_fuel, date, value) %>%
         tidyr::pivot_wider(names_from = id_fuel, values_from = value)
 
-      q <- as.data.frame(q)
-      xq <- xts::xts(q[,-1], order.by = q[,1])
+      q <- tibble::as_tibble(q)
+      xq <- xts::xts(q[,-1], order.by = q$date)
 
       p <- dygraphs::dygraph(xq, group = "usage") %>%
         dygraphs::dyRangeSelector(dateWindow = c("2021-01-01", as.character(Sys.Date()))) %>%
