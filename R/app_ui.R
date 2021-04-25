@@ -40,7 +40,7 @@ app_ui <- function(request) {
                   fluidRow(
                     shinydashboardPlus::box(
                       mod_cum_usage_plot_ui("cum_usage_plot_ui_1"),
-                      width = 10, title = "Total"
+                      width = 12, title = "Total"
                     )
                   )
                 )
