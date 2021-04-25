@@ -50,6 +50,8 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
       ) %>%
       tidyr::pivot_wider(names_from = id_fuel, values_from = value)
 
+    if(nrow(q) == 0) return()
+
     q <- tibble::as_tibble(q)
     xq <- xts::xts(q[,-1], order.by = q$date)
 
