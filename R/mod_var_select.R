@@ -49,6 +49,28 @@ mod_var_select_ui <- function(id){
       inputId = ns("history"),
       label = "Show history:",
       choices = c(TRUE, FALSE)
+    ),
+    dateRangeInput(
+      inputId = ns("dates"),
+      label = "Date range",
+      start = "2021-01-01",
+      end = as.character(Sys.Date()),
+      min = "2019-07-16",
+      max = Sys.Date()
+    ),
+    selectInput(
+      inputId = ns("preset"),
+      label = "Interval presets",
+      choices = list(
+        "none" = 0,
+        "last 30 days" = 30,
+        "last 90 Days" = 90,
+        "2021" = 2021,
+        "2020" = 2020,
+        "2019" = 2019,
+        "All" = 1
+      ),
+      selected = NULL
     )
   )
 }
@@ -58,12 +80,65 @@ mod_var_select_ui <- function(id){
 #' @noRd
 mod_var_select_server <- function(input, output, session){
   ns <- session$ns
+
+  observe({
+    preset <- as.numeric(input$preset)
+
+    if(preset %in% c(30, 90)) {
+      updateDateRangeInput(
+        session,
+        "dates",
+        start = Sys.Date() - preset,
+        end = Sys.Date()
+      )
+    }
+
+    if(preset == "2019") {
+      updateDateRangeInput(
+        session,
+        "dates",
+        start = "2019-07-16",
+        end = "2019-12-31"
+      )
+    }
+
+    if(preset == "2020") {
+      updateDateRangeInput(
+        session,
+        "dates",
+        start = "2020-01-01",
+        end = "2020-12-31"
+      )
+    }
+
+    if(preset == "2021") {
+      updateDateRangeInput(
+        session,
+        "dates",
+        start = "2021-01-01",
+        end = Sys.Date()
+      )
+    }
+
+    if(preset == 1) {
+      updateDateRangeInput(
+        session,
+        "dates",
+        start = "2019-07-16",
+        end = Sys.Date()
+      )
+    }
+
+  })
+
   return(
     list(
          var = reactive({ input$var }),
       tariff = reactive({ input$tariff }),
      history = reactive({ input$history }),
-        fuel = reactive({ input$fuel })
+        fuel = reactive({ input$fuel }),
+       dates = reactive({ input$dates }),
+      preset = reactive({ input$preset })
     )
   )
 

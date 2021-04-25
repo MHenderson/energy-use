@@ -54,7 +54,7 @@ mod_usage_plot_server <- function(id, tidy_energy, plot1vars){
       xq <- xts::xts(q[,-1], order.by = q$date)
 
       p <- dygraphs::dygraph(xq, group = "usage") %>%
-        dygraphs::dyRangeSelector(dateWindow = c("2021-01-01", as.character(Sys.Date()))) %>%
+        dygraphs::dyRangeSelector(dateWindow = c(plot1vars$date()[1], plot1vars$date()[2])) %>%
         dygraphs::dyLegend(show = "follow") %>%
         dygraphs::dyOptions(drawPoints = TRUE, pointSize = 2, strokeWidth = 0)
 
