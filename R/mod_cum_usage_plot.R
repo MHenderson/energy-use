@@ -40,7 +40,7 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
           date <= input$cum_usage_plot_date_window[2]
         ) %>%
         dplyr::select(seq_id, fuel, date, value) %>%
-        dplyr::left_join(X) %>%
+        dplyr::left_join(X, by = "seq_id") %>%
         dplyr::mutate(
           fuel_code = substr(fuel, 1, 1),
           id_fuel = paste0(code, "_", fuel_code)
@@ -68,7 +68,7 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
           date <= input$cum_usage_plot_date_window[2]
         ) %>%
         dplyr::select(seq_id, fuel, date, value) %>%
-        dplyr::left_join(X) %>%
+        dplyr::left_join(X, by = "seq_id") %>%
         dplyr::mutate(
           fuel_code = substr(fuel, 1, 1),
           id_fuel = paste0(code, "_", fuel_code)
@@ -126,7 +126,7 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
         fuel %in% plot1vars$fuel()
       ) %>%
       dplyr::select(seq_id, fuel, date, value) %>%
-      dplyr::left_join(X) %>%
+      dplyr::left_join(X, by = "seq_id") %>%
       dplyr::mutate(
         fuel_code = substr(fuel, 1, 1),
         id_fuel = paste0(code, "_", fuel_code)
