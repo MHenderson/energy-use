@@ -21,28 +21,28 @@ app_ui <- function(request) {
           width = 300
         ),
         body = shinydashboard::dashboardBody(
+          fluidRow(
+            column(width = 12,
               fluidRow(
-                column(width = 12,
-                  fluidRow(
-                    shinydashboardPlus::box(
-                      mod_usage_plot_ui("usage_plot_ui"),
-                      width = 10, title = "Readings"
-                    )
-                  ),
-                  fluidRow(
-                    shinydashboardPlus::box(
-                      mod_usage_trend_plot_ui("usage_trend_plot_ui_1"),
-                      width = 10, title = "Trend"
-                    )
-                  ),
-                  fluidRow(
-                    shinydashboardPlus::box(
-                      mod_cum_usage_plot_ui("cum_usage_plot_ui_1"),
-                      width = 12, title = "Total"
-                    )
-                  )
+                shinydashboardPlus::box(
+                  mod_usage_plot_ui("usage_plot_ui"),
+                  width = 10, title = "Readings"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_usage_trend_plot_ui("usage_trend_plot_ui_1"),
+                  width = 10, title = "Trend"
+                )
+              ),
+              fluidRow(
+                shinydashboardPlus::box(
+                  mod_cum_usage_plot_ui("cum_usage_plot_ui_1"),
+                  width = 12, title = "Total"
                 )
               )
+            )
+          )
         ),
         controlbar = shinydashboardPlus::dashboardControlbar(shinydashboardPlus::skinSelector()),
         title = "Energy Use",
