@@ -14,7 +14,8 @@ mod_cum_usage_plot_ui <- function(id){
       shinycssloaders::withSpinner(dygraphs::dygraphOutput(ns("cum_usage_plot")))
     ),
     column(2,
-      shinycssloaders::withSpinner(uiOutput(ns("cum_usage_info")))
+      shinycssloaders::withSpinner(uiOutput(ns("cum_usage_info"))),
+      shinycssloaders::withSpinner(tableOutput(ns("savings_table")))
     )
   )
 }
@@ -47,9 +48,11 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
         fuel_code = substr(fuel, 1, 1),
         id_fuel = paste0(code, "_", fuel_code)
       ) %>%
-      dplyr::select(id_fuel, date, value) %>%
+      #dplyr::select(id_fuel, date, value) %>%
       dplyr::group_by(id_fuel) %>%
       dplyr::mutate(
+        seq_id = dplyr::first(seq_id),
+        fuel = dplyr::first(fuel),
         value = cumsum(value)
       ) %>%
       dplyr::ungroup()
@@ -64,6 +67,8 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
       ) %>%
       dplyr::group_by(id_fuel) %>%
       dplyr::summarise(
+        seq_id = dplyr::first(seq_id),
+        fuel = dplyr::first(fuel),
         max_value = max(value),
         min_value = min(value),
         diff_value = max_value - min_value
@@ -82,6 +87,36 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
       dplyr::filter(id_fuel == "_e") %>%
       dplyr::pull("diff_value") %>%
       round(2)
+  })
+
+  gas_savings <- reactive({
+    id_fuel_cumsum_window_summary() %>%
+      dplyr::filter(fuel == "gas") %>%
+      dplyr::mutate(
+        savings = diff_value - gas_total()
+      )
+  })
+
+  electricity_savings <- reactive({
+    id_fuel_cumsum_window_summary() %>%
+      dplyr::filter(fuel == "electricity") %>%
+      dplyr::mutate(
+        savings = diff_value - electricity_total()
+      )
+  })
+
+  savings <- reactive({
+    dplyr::bind_rows(gas_savings(), electricity_savings())
+  })
+
+  output$savings_table <- renderTable({
+    savings() %>%
+      dplyr::filter(id_fuel != "_e") %>%
+      dplyr::filter(id_fuel != "_g") %>%
+      dplyr::select(id_fuel, savings) %>%
+      tidyr::separate(id_fuel, into = c("id", "fuel")) %>%
+      tidyr::pivot_wider(names_from = "fuel", values_from = "savings")
+
   })
 
   output$cum_usage_info <- renderUI({
@@ -111,7 +146,9 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
 
   output$cum_usage_plot <- dygraphs::renderDygraph({
 
-    q <- tidyr::pivot_wider(id_fuel_cumsum(), names_from = id_fuel, values_from = value)
+    q <- id_fuel_cumsum() %>%
+      dplyr::select(id_fuel, date, value) %>%
+      tidyr::pivot_wider(names_from = id_fuel, values_from = value)
 
     if(nrow(q) == 0) return()
 
