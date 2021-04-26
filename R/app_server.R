@@ -10,20 +10,12 @@ app_server <- function( input, output, session ) {
 
   if(golem::app_dev()) {
     tidy_energy <- readRDS("/home/matthew/workspace/energy-data/data/tidy_energy.rds")
-    bills <- readRDS("/home/matthew/workspace/energy-data/data/bills.rds")
-    readings <- readRDS("/home/matthew/workspace/energy-data/data/readings.rds")
-    tariffs <- readRDS("/home/matthew/workspace/energy-data/data/tariffs.rds")
   }
   else {
     # download data
     utils::download.file("https://mjh-energy-data.netlify.app/data/tidy_energy.rds", destfile = "tidy_energy.rds")
-    utils::download.file("https://mjh-energy-data.netlify.app/data/bills.rds", destfile = "bills.rds")
-    utils::download.file("https://mjh-energy-data.netlify.app/data/readings.rds", destfile = "readings.rds")
-
     # load data
     tidy_energy <- readRDS("tidy_energy.rds")
-    bills <- readRDS("bills.rds")
-    readings <- readRDS("readings.rds")
   }
 
   # variable selection module
