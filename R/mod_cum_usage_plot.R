@@ -110,15 +110,23 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
   })
 
   output$savings_table <- renderTable({
-    savings() %>%
+    savings_data <- savings() %>%
       dplyr::filter(id_fuel != "_e") %>%
-      dplyr::filter(id_fuel != "_g") %>%
-      dplyr::select(id_fuel, savings) %>%
-      tidyr::separate(id_fuel, into = c("id", "fuel")) %>%
-      tidyr::pivot_wider(names_from = "fuel", values_from = "savings") %>%
-      dplyr::mutate(
-        t = g + e
-      )
+      dplyr::filter(id_fuel != "_g")
+
+    result <- tibble::tibble()
+
+    if(nrow(savings_data) > 0) {
+      result <- savings_data %>%
+        dplyr::select(id_fuel, savings) %>%
+        tidyr::separate(id_fuel, into = c("id", "fuel")) %>%
+        tidyr::pivot_wider(names_from = "fuel", values_from = "savings") %>%
+        dplyr::mutate(
+          t = g + e
+        )
+    }
+
+    result
 
   })
 
@@ -145,6 +153,7 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
         marginBottom = TRUE
       )
     )
+
   })
 
   output$cum_usage_plot <- dygraphs::renderDygraph({
