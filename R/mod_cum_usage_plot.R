@@ -55,7 +55,7 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
       dplyr::ungroup()
   })
 
-  id_fuel_cumsum_window_max <- reactive({
+  id_fuel_cumsum_window_summary <- reactive({
     date_window <- as.Date(req(input$cum_usage_plot_date_window))
     id_fuel_cumsum() %>%
       dplyr::filter(
@@ -63,20 +63,24 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
         date <= date_window[2]
       ) %>%
       dplyr::group_by(id_fuel) %>%
-      dplyr::filter(value == max(value))
+      dplyr::summarise(
+        max_value = max(value),
+        min_value = min(value),
+        diff_value = max_value - min_value
+      )
   })
 
   gas_total <- reactive({
-    id_fuel_cumsum_window_max() %>%
+    id_fuel_cumsum_window_summary() %>%
       dplyr::filter(id_fuel == "_g") %>%
-      dplyr::pull("value") %>%
+      dplyr::pull("diff_value") %>%
       round(2)
   })
 
   electricity_total <- reactive({
-    id_fuel_cumsum_window_max() %>%
+    id_fuel_cumsum_window_summary() %>%
       dplyr::filter(id_fuel == "_e") %>%
-      dplyr::pull("value") %>%
+      dplyr::pull("diff_value") %>%
       round(2)
   })
 
