@@ -15,12 +15,10 @@ app_ui <- function(request) {
         options = list(sidebarExpandOnHover = TRUE),
         header = shinydashboardPlus::dashboardHeader(),
         sidebar = shinydashboardPlus::dashboardSidebar(
-          shinydashboard::sidebarMenu(
-            mod_var_select_ui("plot1_vars")
-          ),
-          fluidRow(column(3, verbatimTextOutput("value"))),
-          minified = TRUE,
-          collapsed = FALSE
+          mod_var_select_ui("plot1_vars"),
+          minified = FALSE,
+          collapsed = FALSE,
+          width = 300
         ),
         body = shinydashboard::dashboardBody(
               fluidRow(
