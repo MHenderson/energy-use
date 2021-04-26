@@ -1,6 +1,6 @@
 Package: energyuse
 Title: My Energy Usage
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: person('Matthew', 'Henderson', email = 'matthew.james.henderson@gmail.com', role = c('cre', 'aut'))
 Description: My energy usage dashboard.
 License: MIT + file LICENSE
@@ -10,19 +10,17 @@ Imports:
     shiny,
     processx,
     attempt,
-    DT,
     glue,
     htmltools,
     dplyr,
     magrittr,
-    ggplot2,
+    shinycssloaders,
     shinydashboard,
     shinydashboardPlus,
-    plotly,
+    shinyWidgets,
     pkgload,
-    googlesheets4,
-    simputation,
-    readxl,
+    tibble,
+    tidyr,
     lubridate,
     dygraphs,
     xts
