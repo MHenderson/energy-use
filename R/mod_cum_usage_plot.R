@@ -115,7 +115,10 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
       dplyr::filter(id_fuel != "_g") %>%
       dplyr::select(id_fuel, savings) %>%
       tidyr::separate(id_fuel, into = c("id", "fuel")) %>%
-      tidyr::pivot_wider(names_from = "fuel", values_from = "savings")
+      tidyr::pivot_wider(names_from = "fuel", values_from = "savings") %>%
+      dplyr::mutate(
+        t = g + e
+      )
 
   })
 
