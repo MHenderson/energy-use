@@ -82,7 +82,8 @@ mod_var_select_server <- function(input, output, session){
   ns <- session$ns
 
   observe({
-    preset <- as.numeric(input$preset)
+
+    preset <- as.numeric(req(input$preset))
 
     if(preset %in% c(30, 90)) {
       updateDateRangeInput(

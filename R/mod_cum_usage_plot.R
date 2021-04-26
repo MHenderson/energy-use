@@ -56,30 +56,31 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
   })
 
   id_fuel_cumsum_window_max <- reactive({
+    date_window <- as.Date(req(input$cum_usage_plot_date_window))
     id_fuel_cumsum() %>%
       dplyr::filter(
-        date >= req(input$cum_usage_plot_date_window[1]),
-        date <= req(input$cum_usage_plot_date_window[2])
+        date >= date_window[1],
+        date <= date_window[2]
       ) %>%
       dplyr::group_by(id_fuel) %>%
       dplyr::filter(value == max(value))
   })
 
+  gas_total <- reactive({
+    id_fuel_cumsum_window_max() %>%
+      dplyr::filter(id_fuel == "_g") %>%
+      dplyr::pull("value") %>%
+      round(2)
+  })
+
+  electricity_total <- reactive({
+    id_fuel_cumsum_window_max() %>%
+      dplyr::filter(id_fuel == "_e") %>%
+      dplyr::pull("value") %>%
+      round(2)
+  })
+
   output$cum_usage_info <- renderUI({
-
-    gas_total <- reactive({
-      id_fuel_cumsum_window_max() %>%
-        dplyr::filter(id_fuel == "_g") %>%
-        dplyr::pull("value") %>%
-        round(2)
-    })
-
-    electricity_total <- reactive({
-      id_fuel_cumsum_window_max() %>%
-        dplyr::filter(id_fuel == "_e") %>%
-        dplyr::pull("value") %>%
-        round(2)
-    })
 
     shinydashboardPlus::boxPad(
       color = "green",
@@ -94,8 +95,7 @@ mod_cum_usage_plot_server <- function(id, tidy_energy, plot1vars){
         text = "Electricity",
         rightBorder = FALSE,
         marginBottom = TRUE
-      )
-      ,
+      ),
       shinydashboardPlus::descriptionBlock(
         header = gas_total() + electricity_total(),
         text = "Total",
