@@ -10,15 +10,23 @@
 mod_var_select_ui <- function(id){
   ns <- NS(id)
   tagList(
-    radioButtons(
+    shinyWidgets::awesomeRadio(
       inputId = ns("var"),
-        label = "Variable:",
+      label = h3("Select variable:"),
       choices = c("kWh" = "kwh", "GBP" = "cost"),
-      selected = "cost"
+      selected = "cost",
+      inline = TRUE
     ),
+    br(),
+    shinyWidgets::materialSwitch(
+      inputId = ns("history"),
+      label = h3("Show history?"),
+      value = TRUE
+    ),
+    br(),
     shinyWidgets::pickerInput(
       inputId = ns("tariff"),
-      label = "Tariff",
+      label = h3("Tariff"),
       choices = list(
         "SP: Scottish Power (Energy Exclusive)" = 1,
         "YE: Yorkshire Energy (Green Ribblehead)" = 2,
@@ -33,9 +41,10 @@ mod_var_select_ui <- function(id){
       multiple = TRUE,
       selected = c()
     ),
+    br(),
     shinyWidgets::pickerInput(
       inputId = ns("fuel"),
-      label = "Fuel",
+      label = h3("Fuel"),
       choices = list("Gas" = "gas", "Electricity" = "electricity"),
       options = list(
         `actions-box` = TRUE,
@@ -45,22 +54,19 @@ mod_var_select_ui <- function(id){
       multiple = TRUE,
       selected = c("gas", "electricity")
     ),
-    radioButtons(
-      inputId = ns("history"),
-      label = "Show history:",
-      choices = c(TRUE, FALSE)
-    ),
+    br(),
     dateRangeInput(
       inputId = ns("dates"),
-      label = "Date range",
+      label = h3("Date range"),
       start = "2021-01-01",
       end = as.character(Sys.Date()),
       min = "2019-07-16",
       max = Sys.Date()
     ),
+    br(),
     selectInput(
       inputId = ns("preset"),
-      label = "Interval presets",
+      label = h3("Interval presets"),
       choices = list(
         "none" = 0,
         "last 30 days" = 30,
