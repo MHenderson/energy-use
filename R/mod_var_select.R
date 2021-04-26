@@ -12,21 +12,21 @@ mod_var_select_ui <- function(id){
   tagList(
     shinyWidgets::awesomeRadio(
       inputId = ns("var"),
-      label = h3("Select variable:"),
+      label = h4("Select variable:"),
       choices = c("kWh" = "kwh", "GBP" = "cost"),
       selected = "cost",
       inline = TRUE
     ),
-    br(),
-    shinyWidgets::materialSwitch(
+    shinyWidgets::awesomeRadio(
       inputId = ns("history"),
-      label = h3("Show history?"),
-      value = TRUE
+      label = h4("Show history?"),
+      choices = c("Yes" = TRUE, "No" = FALSE),
+      selected = TRUE,
+      inline = TRUE
     ),
-    br(),
     shinyWidgets::pickerInput(
       inputId = ns("tariff"),
-      label = h3("Tariff"),
+      label = h4("Tariff"),
       choices = list(
         "SP: Scottish Power (Energy Exclusive)" = 1,
         "YE: Yorkshire Energy (Green Ribblehead)" = 2,
@@ -41,10 +41,9 @@ mod_var_select_ui <- function(id){
       multiple = TRUE,
       selected = c()
     ),
-    br(),
     shinyWidgets::pickerInput(
       inputId = ns("fuel"),
-      label = h3("Fuel"),
+      label = h4("Fuel"),
       choices = list("Gas" = "gas", "Electricity" = "electricity"),
       options = list(
         `actions-box` = TRUE,
@@ -54,29 +53,33 @@ mod_var_select_ui <- function(id){
       multiple = TRUE,
       selected = c("gas", "electricity")
     ),
-    br(),
     dateRangeInput(
       inputId = ns("dates"),
-      label = h3("Date range"),
+      label = h4("Date range"),
       start = "2021-01-01",
       end = as.character(Sys.Date()),
       min = "2019-07-16",
       max = Sys.Date()
     ),
-    br(),
-    selectInput(
+    shinyWidgets::pickerInput(
       inputId = ns("preset"),
-      label = h3("Interval presets"),
+      label = h4("Interval presets"),
       choices = list(
-        "none" = 0,
+        "none" = 1,
+        "last 7 days" = 7,
         "last 30 days" = 30,
         "last 90 Days" = 90,
         "2021" = 2021,
         "2020" = 2020,
-        "2019" = 2019,
-        "All" = 1
+        "2019" = 2019
       ),
-      selected = NULL
+      options = list(
+        `actions-box` = TRUE,
+        size = 10,
+        `selected-text-format` = "count > 3"
+      ),
+      multiple = FALSE,
+      selected = c("gas", "electricity")
     )
   )
 }
@@ -91,7 +94,7 @@ mod_var_select_server <- function(input, output, session){
 
     preset <- as.numeric(req(input$preset))
 
-    if(preset %in% c(30, 90)) {
+    if(preset %in% c(7, 30, 90)) {
       updateDateRangeInput(
         session,
         "dates",

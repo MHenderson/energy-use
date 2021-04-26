@@ -45,9 +45,9 @@ app_ui <- function(request) {
               )
         ),
         controlbar = shinydashboardPlus::dashboardControlbar(shinydashboardPlus::skinSelector()),
-        title = "My Energy Use",
+        title = "Energy Use",
         md = TRUE,
-        skin = "red-light"
+        skin = "black-light"
       )
   )
 }
