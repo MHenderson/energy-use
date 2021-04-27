@@ -56,6 +56,7 @@ mod_usage_plot_server <- function(id, tidy_energy, plot1vars){
       p <- dygraphs::dygraph(xq, group = "usage") %>%
         dygraphs::dyRangeSelector(dateWindow = c(plot1vars$date()[1], plot1vars$date()[2])) %>%
         dygraphs::dyLegend(show = "follow") %>%
+        dygraphs::dyAxis("y", label = plot1vars$var()) %>%
         dygraphs::dyOptions(drawPoints = TRUE, pointSize = 2, strokeWidth = 0)
 
       if("_g" %in% colnames(q)) {
